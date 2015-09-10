@@ -1,12 +1,12 @@
 {
-    "name": "ngMeta",
-    "version": "0.1.0",
-    "authors": [
+  "name": "ngMeta",
+  "version": "0.2.0",
+  "authors": [
     "Vinay Gopinath <vinayg18@gmail.com>"
   ],
-    "description": "Meta tags support for AngularJS single page applications (SPA)",
-    "main": "ngMeta.js",
-    "keywords": [
+  "description": "Meta tags support for AngularJS single page applications (SPA)",
+  "main": "ngMeta.js",
+  "keywords": [
     "angularjs",
     "meta",
     "title",
@@ -14,19 +14,20 @@
     "description",
     "spa"
   ],
-    "license": "MIT",
-    "homepage": "https://github.com/vinaygopinath/ngMeta",
-    "ignore": [
+  "license": "MIT",
+  "homepage": "https://github.com/vinaygopinath/ngMeta",
+  "ignore": [
     "**/.*",
     "node_modules",
     "bower_components",
     "test",
     "tests"
   ],
-    "dependencies": {
-        "angular": ">1.2"
-    },
-    "devDependencies": {
-        "angular-mocks": ">1.2"
-    }
+  "dependencies": {
+    "angular": ">1.2"
+  },
+  "devDependencies": {
+    "angular-mocks": ">1.2",
+    "angular-route": "~1.4.5"
+  }
 }

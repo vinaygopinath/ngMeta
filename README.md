@@ -239,10 +239,10 @@ To change meta tags dynamically (on a certain action or event), inject the `ngMe
 
 ```js
 //uses default title suffix, if useTitleSuffix enabled
-ngMeta.setTitle('Page title'); 
+ngMeta.setTitle('Page title');
 
 //results in the title 'Page Title | Example Suffix'
-ngMeta.setTile('Page title', ' | Example Suffix');
+ngMeta.setTitle('Page title', ' | Example Suffix');
 
 //changes the description
 ngMeta.setDescription('Song A by SingerXYZ from the 2009 album ABC');

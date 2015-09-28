@@ -257,7 +257,7 @@ While Google is capable of rendering Angular sites, other search engines (?) and
 
 ![Facebook site snippet](http://i.imgur.com/wSNMYNF.png)
 
-You can use prerendering services to avoid this issue altogether update the server config to generate and serve a simplified page with just the open graph meta data needed for the bots to create snippets. Michael Bromley's article, [Enable Rich Sharing In Your AngularJS App](http://www.michaelbromley.co.uk/blog/171/enable-rich-social-sharing-in-your-angularjs-app) has more information on how to do that.
+You can use prerendering services to avoid this issue altogether, or update the server config to generate and serve a simplified page with just the open graph meta data needed for the bots to create snippets. Michael Bromley's article, [Enable Rich Sharing In Your AngularJS App](http://www.michaelbromley.co.uk/blog/171/enable-rich-social-sharing-in-your-angularjs-app) has more information on how to do that.
 
 You can use Facebook's [Open Graph Object Debugger](https://developers.facebook.com/tools/debug/og/object/) to see detailed information about your site's meta tags as well as a preview of the snippet shown when your site is shared.
 

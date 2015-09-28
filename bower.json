@@ -1,11 +1,11 @@
 {
   "name": "ngMeta",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "authors": [
     "Vinay Gopinath <vinayg18@gmail.com>"
   ],
   "description": "Meta tags support for AngularJS single page applications (SPA)",
-  "main": "ngMeta.js",
+  "main": "src/ngMeta.js",
   "keywords": [
     "angularjs",
     "meta",

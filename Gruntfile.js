@@ -38,6 +38,12 @@ module.exports = function(grunt) {
     },
     //Minify the dist file
     uglify: {
+      options: {
+        preserveComments: false,
+        compress: {
+          drop_console: true
+        }
+      },
       dist: {
         files: {
           'dist/ngMeta.min.js': 'dist/ngMeta.js'

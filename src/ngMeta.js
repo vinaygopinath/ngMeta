@@ -3,115 +3,154 @@
  * @name ngMeta.ngMeta
  * @description
  * # A metatags service for single-page applications
- * that supports setting title, description, open-graph and twitter card meta tags
+ * that supports setting arbitrary meta tags
  */
 angular.module('ngMeta', [])
-    .provider('ngMeta', function () {
+  .provider('ngMeta', function() {
 
-        'use strict';
+    'use strict';
 
-        var defaults = {
-            title: '',
-            titleSuffix: '',
-            description: '',
-            ogImgUrl: '',
-            ogTitle: '',
-            twCard: ''
-        };
+    //Object for storing default tag/values
+    var defaults = {};
 
-        var config = {
-            name: 'ngMeta',
-            useTitleSuffix: false,
-            ogType: 'website',
-            ogSiteName: '',
-            ogLocale: 'en_US',
-        };
+    //One-time configuration
+    var config = {
+      useTitleSuffix: false
+    };
 
-        //Constructor
-        function Meta($rootScope) {
+    function Meta($rootScope) {
 
-            var setTitle = function (title, titleSuffix) {
-                $rootScope[config.name].title = title || defaults.title;
-                if (config.useTitleSuffix) {
-                    $rootScope[config.name].title += titleSuffix || defaults.titleSuffix;
-                }
-            };
+      /**
+       * @ngdoc function
+       * @name setTitle
+       * @description
+       * Sets the title of the page, optionally
+       * appending a title suffix.
+       *
+       * If suffix usage is enabled and the title suffix
+       * parameter is missing, the default title suffix
+       * (if available) is used as a fallback.
+       *
+       * Example usage:
+       * //title and titleSuffix
+       * ngMeta.setTitle('Page name', ' - Site name | Tagline of the site');
+       *
+       * //title only (default titleSuffix may be suffixed,
+       * //depending on useTitleSuffix configuration)
+       * ngMeta.setTitle('Page name');
+       */
+      var setTitle = function(title, titleSuffix) {
+        $rootScope.ngMeta.title = title || defaults.title;
+        if (config.useTitleSuffix) {
+          $rootScope.ngMeta.title += titleSuffix || defaults.titleSuffix;
+        }
+      };
 
-            var setDescription = function (description) {
-                $rootScope[config.name].description = description || defaults.description;
-            };
+      /**
+       * @ngdoc function
+       * @name setTag
+       * @description
+       * Sets the value of a meta tag, using
+       * the default value (if available) as
+       * a fallback.
+       *
+       * Example usage:
+       * ngMeta.setTag('og:image', 'http://example.com/a.png');
+       */
+      var setTag = function(tag, value) {
+        $rootScope.ngMeta[tag] = value || defaults[tag];
+      };
 
-            var setOgImgUrl = function (ogImgUrl) {
-                $rootScope[config.name].ogImgUrl = ogImgUrl || defaults.ogImgUrl;
-            };
+      /**
+       * @ngdoc function
+       * @name readRouteMeta
+       * @description
+       * Helper function to process meta tags on route/state
+       * change.
+       *
+       * It does the following:
+       * 1. Sets the title (with titleSuffix, as appropriate)
+       * 2. Iterates through all the state/route tags (other than title)
+       *    and sets their values
+       * 3. Iterates through all default tags and sets the ones
+       *    that were not utilized while setting the state/route tags.
+       */
+      var readRouteMeta = function(meta) {
+        meta = meta || {};
 
-            var readRouteMeta = function (meta) {
-                meta = meta || {};
-                setTitle(meta.title, meta.titleSuffix);
-                setDescription(meta.description);
-                setOgImgUrl(meta.ogImgUrl);
-            };
+        setTitle(meta.title, meta.titleSuffix);
+        delete meta.title;
+        delete meta.titleSuffix;
 
-            var update = function (event, current) {
-                readRouteMeta(current.meta);
-            };
-
-            $rootScope[config.name] = {};
-            $rootScope[config.name].ogType = config.ogType;
-            $rootScope[config.name].ogSiteName = config.ogSiteName;
-            $rootScope[config.name].ogLocale = config.ogLocale;
-            $rootScope.$on('$routeChangeSuccess', update);
-            $rootScope.$on('$stateChangeSuccess', update);
-
-            return {
-                'setTitle': setTitle,
-                'setDescription': setDescription,
-                'setOgImgUrl': setOgImgUrl
-            };
+        var metaKeys = Object.keys(meta);
+        var def = angular.copy(defaults);
+        for (var i = 0; i < metaKeys.length; i++) {
+          if (def.hasOwnProperty(metaKeys[i])) {
+            delete def[metaKeys[i]];
+          }
+          setTag(metaKeys[i], meta[metaKeys[i]]);
         }
 
-        /* Set defaults */
+        var defaultKeys = Object.keys(def);
+        for (var j = 0; j < defaultKeys.length; j++) {
+          setTag(defaultKeys[j], def[defaultKeys[j]]);
+        }
+      };
 
-        this.setDefaultTitle = function (titleStr) {
-            defaults.title = titleStr;
-        };
+      var update = function(event, current) {
+        readRouteMeta(angular.copy(current.meta));
+      };
 
-        this.setDefaultTitleSuffix = function (titleSuffix) {
-            defaults.titleSuffix = titleSuffix;
-        };
+      /**
+       * @ngdoc function
+       * @name init
+       * @description
+       * Initializes the ngMeta object and sets up
+       * listeners for route/state change broadcasts
+       *
+       * Example usage:
+       * angular.module('yourApp', ['ngRoute', 'ngMeta'])
+       * .config(function($routeProvider, ngMetaProvider) {
+       *   ....
+       * })
+       * .run(function(ngMeta) {
+       *   ngMeta.init();
+       * });
+       */
+      var init = function() {
+        $rootScope.ngMeta = {};
+        $rootScope.$on('$routeChangeSuccess', update);
+        $rootScope.$on('$stateChangeSuccess', update);
+      };
 
-        this.setDefaultDescription = function (desc) {
-            defaults.description = desc;
-        };
+      return {
+        'init': init,
+        'setTitle': setTitle,
+        'setTag': setTag
+      };
+    }
 
-        this.setDefaultOgImgUrl = function (imgUrl) {
-            defaults.ogImgUrl = imgUrl;
-        };
+    /* Set defaults */
 
-        /* One-time config */
+    this.setDefaultTitle = function(titleStr) {
+      defaults.title = titleStr;
+    };
 
-        this.setName = function (varName) {
-            config.name = varName;
-        };
+    this.setDefaultTitleSuffix = function(titleSuffix) {
+      defaults.titleSuffix = titleSuffix;
+    };
 
-        this.useTitleSuffix = function (bool) {
-            config.useTitleSuffix = !!bool;
-        };
+    this.setDefaultTag = function(tag, value) {
+      defaults[tag] = value;
+    };
 
-        this.setOgType = function (type) {
-            config.ogType = type;
-        };
+    /* One-time config */
 
-        this.setOgSiteName = function (siteName) {
-            config.ogSiteName = siteName;
-        };
+    this.useTitleSuffix = function(bool) {
+      config.useTitleSuffix = !!bool;
+    };
 
-        this.setOgLocale = function (locale) {
-            config.ogLocale = locale;
-        };
-
-        // Method for instantiating
-        this.$get = function ($rootScope) {
-            return new Meta($rootScope);
-        };
-    });
+    this.$get = function($rootScope) {
+      return new Meta($rootScope);
+    };
+  });

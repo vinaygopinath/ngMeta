@@ -8,7 +8,6 @@
 * [Meta tags](#meta-tags)
 * [Options](#options)
 	* [General options](#general-options)
-	* [Open Graph options](#open-graph-options)
 * [Defaults](#defaults)
 * [Setting meta tags dynamically](#setting-meta-tags-dynamically)
 * [Support For Other Crawlers](#support-for-other-crawlers)
@@ -56,22 +55,22 @@ ngMeta supports ui-router and ngRoute. Add `meta` objects to your routes (ngRout
     templateUrl: 'home-template.html',
     meta: {
       //Sets 'Home Page' as the title when /home is open
-      title: 'Home page', 
-      description: 'This is the description shown in Google search results'
+      'title': 'Home page', 
+      'description': 'This is the description shown in Google search results'
     }
   })
   .when('/login', {
     templateUrl: 'login-template.html',
     meta: {
-      title: 'Login page',
-      description: 'Login to the site'
+      'title': 'Login page',
+      'description': 'Login to the site'
     }
   });
   ...
 });
 ```
 
-Set the default values of the meta tags or change ngMeta options during Angular's configuration phase.
+Set the default values of meta tags or change ngMeta options during Angular's configuration phase.
 ```js
 //Add a suffix to all page titles
 ngMetaProvider.useTitleSuffix(true);
@@ -79,13 +78,20 @@ ngMetaProvider.useTitleSuffix(true);
 // On /home, the title would change to 
 // 'Home Page | Best Website on the Internet!'
 ngMetaProvider.setDefaultTitleSuffix(' | Best Website on the Internet!');
+
+//Set defaults for arbitrary tags
+// Default author name
+ngMetaProvider.setDefaultTag('author', 'John Smith');
 ```
 
-Let `ngMeta` initialize by injecting it into the `run` block
+Let `ngMeta` initialize by calling the `init()` function in the app.js `run` block
 ```js
-angular.module('YourApp', ['ngMeta'])
+angular.module('YourApp', ['ngRoute', 'ngMeta'])
+.config(function($routeProvider, ngMetaProvider) {
+  ....
+})
 .run(function(ngMeta) {
-...
+  ngMeta.init();
 });
 ```
 
@@ -94,40 +100,42 @@ Don't forget to set the meta tags in index.html
 <title ng-bind="ngMeta.title"></title>
 <!-- OR <title>{{ngMeta.title}}</title> -->    
 
-<!-- Set the open graph website type. Defaults to 'website' -->
-<meta property="og:type" content="{{ngMeta.ogType}}" />
-    
-<!-- Set the open graph locale. Default locale is en_US -->
-<meta property="og:locale" content="{{ngMeta.ogLocale}}" />
-    
-<!-- Set the description based on the current route/state -->
-<!-- If not available, use the default description or '' -->
+<!-- Arbitrary tags -->
+<meta property="og:type" content="{{ngMeta['og:type']}}" />
+<meta property="og:locale" content="{{ngMeta['og:locale']}}" />
+<meta name="author" content="{{ngMeta['author']}}" />
+<!-- OR <meta name="author" content="{{ngMeta.author}}" /> -->
 <meta name="description" content="{{ngMeta.description}}" />
+
 ```
 
 ## Meta tags
 
-Add a `meta` object within a route/state in the $routeProvider/$stateProvider. This meta object can contain the following properties - `title`, `titleSuffix`, `description` and `ogImgUrl`. 
+Add a `meta` object within a route/state in the $routeProvider/$stateProvider. This meta object can contain arbitrary properties.
 ```javascript
 .when('/login', {
     templateUrl: 'login-template.html',
     meta: {
       //Sets 'Login Page' as the title when /login is open
+      //Overrides the default title (if it is defined)
       title: 'Login page',
       
-      //The title suffix for this route. Used only when useTitleSuffix is enabled.
+      //The title suffix for this route. Used only when useTitleSuffix is enabled. Overrides the default titleSuffix (if it is defined)
       titleSuffix: 'Funny Cat Pictures',
       
       //The description of this page
       description: 'Login to this wonderful website!',
       
       // og:image URL
-      ogImgUrl: 'http://example.com/abc.jpg'
+      'og:image': 'http://example.com/abc.jpg',
+      
+      //Author tag
+      'author': 'Placeholder Name'
     }
   }
 ```
 
-If a route is missing any of these properties, `ngMeta` checks if a default has been defined for the missing property. If available, the default value is served. If there is no default, an empty string is served as the meta tag value.
+If a route is missing any of these properties, `ngMeta` checks if a default has been defined for the missing property. If available, the default value is served.
 
 ## Options
 
@@ -135,66 +143,15 @@ Change ngMeta options using these functions of `ngMetaProvider`
 
 ### General options
 
-#### Name
-
-Default: `ngMeta`
-Example: 
-```javascript
-ngMetaProvider.setName('metaTags')
-```
-
-The name of the variable by which the meta tag information is accessible.
-
-
-The example code would allow you to use 
-```html
-<meta name="description" content="{{metaTags.description}}" />
-```
-
 #### Title Suffix
 
 Default: `false`
 Example: 
 ```javascript
-ngMetaProvider.useTitleSuffix(true)
+ngMetaProvider.useTitleSuffix(true);
 ```
 
 Toggle the use of a title suffix. Setting it to true enables the use of an optional title suffix for all pages
-
-### Open Graph Options
-
-#### Type
-
-Default: `website`
-Used with: `og:type`
-Example: 
-```javascript
-ngMetaProvider.setOgType('article')
-```
-
-Refer to the [Open Graph Types](http://ogp.me/#types) document for more information.
-
-#### Site Name
-
-Default: `''` (empty)
-Used with: `og:site_name`
-Example: 
-```javascript
-ngMetaProvider.setOgSiteName('Caravan Magazine')
-```
-
-The name of your site. Note that this must be of the form `Caravan Magazine` and not `caravanmagazine.in`
-
-#### Locale
-
-Default: `en_US`
-Used with: `og:locale`
-Example: 
-```javascript
-ngMetaProvider.setOgLocale('en_IN')
-```
-
-The locale of your site.
 
 ## Defaults
 
@@ -209,15 +166,6 @@ ngMetaProvider.setDefaultTitle('Playlist')
 
 The default title is used when the title of a page is not specified.
 
-#### Description
-
-The default description is used when the description of a page is not specified.
-
-Example: 
-```javascript
-ngMetaProvider.setDefaultDescription('Over 5 million songs! All your favourite musicians')
-```
-
 #### Title suffix
 
 Example: 
@@ -227,10 +175,13 @@ ngMetaProvider.setDefaultTitleSuffix('Free unlimited ad-free radio')
 
 The default title suffix is used when `useTitleSuffix` option is enabled and the title suffix of a page is not specified.
 
-#### Open Graph Image
+#### Other tag defaults
+
 Example:
 ```javascript
-ngMetaProvider.setOgImgUrl('http://example.com/path/to/img.jpg')
+ngMetaProvider.setDefaultTag('description', 'Default description text');
+ngMetaProvider.setDefaultTag('og:url', 'http://example.com');
+ngMetaProvider.setDefaultTag('author', 'John Smith');
 ```
 
 ## Setting meta tags dynamically
@@ -245,10 +196,10 @@ ngMeta.setTitle('Page title');
 ngMeta.setTitle('Page title', ' | Example Suffix');
 
 //changes the description
-ngMeta.setDescription('Song A by SingerXYZ from the 2009 album ABC');
+ngMeta.setTag('description', 'Song A by SingerXYZ from the 2009 album ABC');
 
 //changes the open graph image
-ngMeta.setOgImgUrl('http://example.com/large_image.png');
+ngMeta.setTag('og:image', 'http://example.com/large_image.png');
 ```
 
 ## Support For Other Crawlers

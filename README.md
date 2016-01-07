@@ -2,6 +2,7 @@
 
 > Dynamic meta tags in your AngularJS single page application
 
+* [Demo](#demo)
 * [Introduction](#introduction)
 * [Install](#install)
 * [Getting Started](#getting-started)
@@ -12,6 +13,9 @@
 * [Setting meta tags dynamically](#setting-meta-tags-dynamically)
 * [Support For Other Crawlers](#support-for-other-crawlers)
 * [Licence](#mit-licence)
+
+## Demo
+Visit [vinaygopinath.github.io/ngMeta](http://vinaygopinath.github.io/ngMeta)
 
 ## Introduction
 

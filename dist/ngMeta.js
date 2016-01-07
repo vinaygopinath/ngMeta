@@ -31,7 +31,7 @@ angular.module('ngMeta', [])
        * parameter is missing, the default title suffix
        * (if available) is used as a fallback.
        *
-       * Example usage:
+       * @example
        * //title and titleSuffix
        * ngMeta.setTitle('Page name', ' - Site name | Tagline of the site');
        *
@@ -54,7 +54,7 @@ angular.module('ngMeta', [])
        * the default value (if available) as
        * a fallback.
        *
-       * Example usage:
+       * @example
        * ngMeta.setTag('og:image', 'http://example.com/a.png');
        */
       var setTag = function(tag, value) {
@@ -68,7 +68,7 @@ angular.module('ngMeta', [])
        * Helper function to process meta tags on route/state
        * change.
        *
-       * It does the following:
+       * It:
        * 1. Sets the title (with titleSuffix, as appropriate)
        * 2. Iterates through all the state/route tags (other than title)
        *    and sets their values
@@ -79,11 +79,15 @@ angular.module('ngMeta', [])
         meta = meta || {};
 
         setTitle(meta.title, meta.titleSuffix);
+
+        var def = angular.copy(defaults);
+
         delete meta.title;
         delete meta.titleSuffix;
+        delete def.title;
+        delete def.titleSuffix;
 
         var metaKeys = Object.keys(meta);
-        var def = angular.copy(defaults);
         for (var i = 0; i < metaKeys.length; i++) {
           if (def.hasOwnProperty(metaKeys[i])) {
             delete def[metaKeys[i]];
@@ -108,7 +112,7 @@ angular.module('ngMeta', [])
        * Initializes the ngMeta object and sets up
        * listeners for route/state change broadcasts
        *
-       * Example usage:
+       * @example
        * angular.module('yourApp', ['ngRoute', 'ngMeta'])
        * .config(function($routeProvider, ngMetaProvider) {
        *   ....

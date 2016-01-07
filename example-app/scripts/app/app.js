@@ -1,7 +1,7 @@
 angular.module('ngMetaDemoApp', ['ngRoute', 'ngMeta'])
   .config(function($routeProvider, ngMetaProvider) {
     $routeProvider
-      .when('/home', {
+      .when('/', {
         templateUrl: 'example-app/views/home.html',
         meta: {
           title: 'ngMeta',
@@ -25,7 +25,7 @@ angular.module('ngMetaDemoApp', ['ngRoute', 'ngMeta'])
         }
       })
       .otherwise({
-        redirectTo: '/home'
+        redirectTo: '/'
       });
 
     ngMetaProvider.useTitleSuffix(true);

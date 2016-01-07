@@ -1,0 +1,82 @@
+<h6 class="title text-center">Define meta tags in your app config for the routes/states of your Angular single-page application.</h6>
+<p class="text-center">Supports <a href="https://github.com/angular-ui/ui-router" target="_blank">ui-router</a> and <a href="https://docs.angularjs.org/api/ngRoute" target="_blank">angular-route (ngRoute)</a></p>
+
+<h5>Getting Started</h5>
+<ol>
+  <li>
+    <p>Download ngMeta
+      <pre>
+        bower install --save ngMeta
+      </pre>
+      Check out the <a href="#/download">download</a> section for other download options (NPM, JS file)
+    </p>
+  </li>
+  
+  <li>
+    <p>
+      Add <code>'ngMeta'</code> as a project dependency
+      <pre>
+        angular.module('yourApp', [....,'ngMeta']);
+      </pre>
+    </p>
+  </li>
+  
+  <li>
+    <p>Add meta tags to your routes/states
+      <pre>
+        angular.module('yourApp', [....,'ngRoute','ngMeta'])
+        .config(function($routeProvider) {
+          $routeProvider
+          .when('/', {
+            templateUrl: 'views/home.html',
+            controller: 'HomeCtrl',
+            meta: {
+              title: 'Home',
+              description: 'Sample description of the home page'
+            }
+          })
+          .when('/about', {
+            templateUrl: 'views/about.html',
+            controller: 'AboutCtrl',
+            meta: {
+              title: 'About Us',
+              description: 'Description of about-us page'
+            }
+          })
+          ...
+        });
+      </pre>
+    </p>
+  </li>
+  
+  <li>
+    <p>
+      Initialize ngMeta using the run block
+      <pre>
+        angular.module('yourApp', [....,'ngMeta'])
+        .config(function(...) {
+          ...
+        })
+        .run(function(ngMeta) {
+          ngMeta.init();
+        });
+      </pre>
+    </p>
+  </li>
+  
+  <li>
+    <p>Use meta tags in your HTML file
+      <pre>
+        <code ng-non-bindable>
+          &lt;head&gt;
+          &lt;title&gt;{{ngMeta.title}}&lt;/title&gt;
+          &lt;meta property="og:title" content="{{ngMeta.title}}" /&gt;
+          &lt;meta property="og:description" content="{{ngMeta.description}}" /&gt;
+          &lt;/head&gt;
+        </code>
+      </pre>
+    </p>
+  </li>
+</ol>
+
+This site uses ngMeta - Use "View source" in your browser to look at app.js, or check out the example-app code (on gh-pages branch) on GitHub.

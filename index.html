@@ -1,1 +1,52 @@
-<h3>ngMeta demo site</h3>
+<!DOCTYPE html>
+<html ng-app="ngMetaDemoApp">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-site-verification" content="LLEobJqXLJsrm0--qkvhDFWCDuPAiRlph7PP3ChH2ZY" />
+  <title ng-bind="ngMeta.title"></title>
+  <link rel="stylesheet" href="example-app/styles/main.css" type="text/css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.purple-amber.min.css" />
+</head>
+
+<body>
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer
+  mdl-layout--fixed-header">
+    <header class="mdl-layout__header">
+      <div class="mdl-layout__header-row">
+        <span class="mdl-layout__title">{{ngMeta.title}}</span>
+        <div class="mdl-layout-spacer"></div>
+      </div>
+    </header>
+    <div class="mdl-layout__drawer">
+      <span class="mdl-layout-title">ngMeta</span>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link" href="/#/home">Home</a>
+        <a class="mdl-navigation__link" href="/#/download">Download</a>
+        <a class="mdl-navigation__link" href="/#/example/dynamic-tags">Dynamic Tags Example</a>
+      </nav>
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link" href="https://github.com/vinaygopinath/ngMeta" target="_blank">View on GitHub</a>
+      </nav>
+    </div>
+    <main class="mdl-layout__content">
+      <div class="page-content">
+        <ng-view></ng-view>
+      </div>
+      <a href="https://github.com/vinaygopinath/ngMeta" target="_blank" id="github-btn" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--accent mdl-color-text--accent-contrast">View on GitHub</a>
+    </main>
+  </div>
+
+  <script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"></script>
+  <script src="example-app/scripts/vendor/angular.js"></script>
+  <script src="example-app/scripts/vendor/angular-route.js"></script>
+  <script src="example-app/scripts/vendor/ngMeta.js"></script>
+
+
+  <script src="example-app/scripts/app/app.js"></script>
+  <script src="example-app/scripts/app/dynamic-tags-ctrl.js"></script>
+</body>
+
+</html>

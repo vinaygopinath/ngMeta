@@ -1,1 +1,93 @@
-<h5>Coming soon</h5>
+<h5>Dynamic tags</h5>
+<p>
+  You can update meta tags programmatically by injecting ngMeta into your controller
+  <pre>
+    angular.module('yourApp')
+    .controller('SomeController', function($scope, ngMeta) {
+      
+      $scope.someMethod = function(tagName, tagValue) {
+        //Some method called, set the tag
+        ngMeta.setTag(tagName, tagValue);
+      };
+      
+      $scope.someOtherMethod = function(articleName) {
+        //Change title based on selected article
+        ngMeta.setTitle(articleName);
+      };
+    });
+  </pre>
+</p>
+
+<section id="article-section">
+  <strong>Choose a documentation article</strong>
+  <p>Depending on the article selected, meta tags wil be updated dynamically</p>
+  <div class="article-choice">
+    <div class="option">
+      <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
+        <input ng-model="ctrl.selectedIndex" type="radio" id="option-1" class="mdl-radio__button" name="options" value="1">
+        <span class="mdl-radio__label">Article 1 - Title</span>
+      </label>
+    </div>
+    <div class="option">
+      <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-2">
+        <input ng-model="ctrl.selectedIndex" type="radio" id="option-2" class="mdl-radio__button" name="options" value="2">
+        <span class="mdl-radio__label">Article 2 - Tag</span>
+      </label>
+    </div>
+    <button ng-disabled="!ctrl.selectedIndex" ng-click="ctrl.loadArticle(ctrl.selectedIndex)" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+      Load article
+    </button>
+  </div>
+  <div class="mdl-grid" ng-if="ctrl.article">
+    <div class="mdl-cell mdl-cell--12-col-phone mdl-cell--10-col-tablet mdl-cell--1-offset-tablet mdl-cell--8-col mdl-cell--2-offset">
+      <div class="mdl-card mdl-shadow--3dp article">
+        <div class="mdl-card__title">
+          <h2 class="mdl-card__title-text">Article {{ctrl.article.index}} - {{ctrl.article.title}}</h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+          {{ctrl.article.content}}
+          <div class="examples" ng-if="ctrl.expanded">
+            <h4 class="mdl-title">Examples</h4>
+            <div ng-repeat="example in ctrl.article.examples">
+              <strong><code>{{example.code}}</code></strong>
+              <p>{{example.text}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+          <a ng-click="ctrl.expanded = !ctrl.expanded" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">{{ctrl.expanded ? 'Hide examples' : 'Show examples'}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h6 class="mdl-title">ngMeta properties</h6>
+  <p>Refer to the <a href="http://vinaygopinath.github.io/ngMeta/example-app/scripts/app/dynamic-tags-ctrl.js" target="_blank">source code</a> of this page's controller to see dynamic meta tags in action.</p>
+  <p>
+    Set <code>ngMeta.title</code> as the value of the <code>og:title</code> meta tag
+    <pre>
+      Title (ngMeta.title):
+      {{ngMeta.title}}
+    </pre>
+  </p>
+  <p>
+    Example:
+    <pre ng-non-bindable>
+      &lt;meta property="og:title" content="{{ngMeta.title}}" /&gt;
+    </pre>
+  </p>
+  <p>
+    Similarly, you can set and refer to arbitrary meta tags
+    <pre>
+      Author (ngMeta.author): {{ngMeta.author}}
+    </pre>
+  </p>
+  <p>
+    Example:
+    <pre ng-non-bindable>
+      &lt;meta property="og:author" content="{{ngMeta.author}}" /&gt;
+    </pre>
+  </p>
+</section>

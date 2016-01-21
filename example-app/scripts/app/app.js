@@ -19,6 +19,7 @@ angular.module('ngMetaDemoApp', ['ngRoute', 'ngMeta'])
       .when('/example/dynamic-tags', {
         templateUrl: 'example-app/views/dynamic-tags.html',
         controller: 'DynamicTagsCtrl',
+        controllerAs: 'ctrl',
         meta: {
           title: 'Example - Dynamic Tags',
           titleSuffix: ' | ngMeta - Customize meta tags from your controllers'

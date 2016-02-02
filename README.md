@@ -12,6 +12,7 @@
 * [Defaults](#defaults)
 * [Setting meta tags dynamically](#setting-meta-tags-dynamically)
 * [Support For Other Crawlers](#support-for-other-crawlers)
+* [Debugging](#debugging)
 * [Licence](#mit-licence)
 
 ## Demo
@@ -192,6 +193,8 @@ ngMetaProvider.setDefaultTag('author', 'John Smith');
 
 To change meta tags dynamically (on a certain action or event), inject the `ngMeta` service into your controller and use one of the following functions:
 
+Note: Please use `setTitle` to modify the title and/or titleSuffix and `setTag` for all other tags.
+
 ```js
 //uses default title suffix, if useTitleSuffix enabled
 ngMeta.setTitle('Page title');
@@ -215,6 +218,12 @@ While Google is capable of rendering Angular sites, other search engines (?) and
 You can use prerendering services to avoid this issue altogether, or update the server config to generate and serve a simplified page with just the open graph meta data needed for the bots to create snippets. Michael Bromley's article, [Enable Rich Sharing In Your AngularJS App](http://www.michaelbromley.co.uk/blog/171/enable-rich-social-sharing-in-your-angularjs-app) has more information on how to do that.
 
 You can use Facebook's [Open Graph Object Debugger](https://developers.facebook.com/tools/debug/og/object/) to see detailed information about your site's meta tags as well as a preview of the snippet shown when your site is shared.
+
+## Debugging
+To check out the tags set by ngMeta when a state/route is open, you can use the [ng-inspector Chrome extension](https://chrome.google.com/webstore/detail/ng-inspector-for-angularj/aadgmnobpdmgmigaicncghmmoeflnamj)
+
+![ng-inspector running on an Angular SPA with ngMeta](http://i.imgur.com/3ltyKC4.png)
+
 
 ## MIT Licence
 *Vinay Gopinath*

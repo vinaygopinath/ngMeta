@@ -18,6 +18,8 @@
     "angularjs",
     "meta",
     "title",
+    "seo",
+    "google",
     "open-graph",
     "description",
     "spa"
@@ -28,6 +30,9 @@
     "url": "https://github.com/vinaygopinath/ngMeta/issues"
   },
   "homepage": "https://github.com/vinaygopinath/ngMeta",
+  "dependencies": {
+    "angular": "^1.2.x"
+  },
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-contrib-jshint": "^0.11.2",

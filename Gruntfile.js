@@ -4,6 +4,8 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
 
+    pkg: grunt.file.readJSON('package.json'),
+
     //Javascript code suggestions
     jshint: {
       files: ['Gruntfile.js', 'src/{,*/}*.js', 'test/{,*/}*.js'],
@@ -42,7 +44,8 @@ module.exports = function(grunt) {
         preserveComments: false,
         compress: {
           drop_console: true
-        }
+        },
+        banner: '/* <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("dd-mmm-yyyy") %> \n <%= pkg.homepage %>\n*/\n'
       },
       dist: {
         files: {

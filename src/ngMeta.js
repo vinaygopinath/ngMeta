@@ -54,9 +54,9 @@
          * ngMeta.setTitle('Page name');
          */
         var setTitle = function(title, titleSuffix) {
-          $rootScope.ngMeta.title = title || defaults.title;
+          $rootScope.ngMeta.title = angular.isDefined(title) ? title : defaults.title;
           if (config.useTitleSuffix) {
-            $rootScope.ngMeta.title += titleSuffix || defaults.titleSuffix;
+            $rootScope.ngMeta.title += angular.isDefined(titleSuffix) ? titleSuffix : defaults.titleSuffix;
           }
         };
 
@@ -72,7 +72,7 @@
          * ngMeta.setTag('og:image', 'http://example.com/a.png');
          */
         var setTag = function(tag, value) {
-          $rootScope.ngMeta[tag] = value || defaults[tag];
+          $rootScope.ngMeta[tag] = angular.isDefined(value) ? value : defaults[tag];
         };
 
         /**

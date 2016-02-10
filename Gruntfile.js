@@ -45,7 +45,7 @@ module.exports = function(grunt) {
         compress: {
           drop_console: true
         },
-        banner: '/* <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("dd-mmm-yyyy") %> \n <%= pkg.homepage %>\n*/\n'
+        banner: '/* ngMeta - v<%= pkg.version %> - <%= grunt.template.today("dd-mmm-yyyy") %> \n <%= pkg.homepage %>\n*/\n'
       },
       dist: {
         files: {

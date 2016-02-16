@@ -54,6 +54,9 @@
          * ngMeta.setTitle('Page name');
          */
         var setTitle = function(title, titleSuffix) {
+          if (!$rootScope.ngMeta) {
+            throw new Error('Cannot call setTitle when ngMeta is undefined. Did you forget to call ngMeta.init() in the run block? \nRefer: https://github.com/vinaygopinath/ngMeta#getting-started');
+          }
           $rootScope.ngMeta.title = angular.isDefined(title) ? title : defaults.title;
           if (config.useTitleSuffix) {
             $rootScope.ngMeta.title += angular.isDefined(titleSuffix) ? titleSuffix : defaults.titleSuffix;
@@ -72,6 +75,9 @@
          * ngMeta.setTag('og:image', 'http://example.com/a.png');
          */
         var setTag = function(tag, value) {
+          if (!$rootScope.ngMeta) {
+            throw new Error('Cannot call setTag when ngMeta is undefined. Did you forget to call ngMeta.init() in the run block? \nRefer: https://github.com/vinaygopinath/ngMeta#getting-started');
+          }
           $rootScope.ngMeta[tag] = angular.isDefined(value) ? value : defaults[tag];
         };
 

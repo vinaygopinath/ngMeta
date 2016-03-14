@@ -78,6 +78,9 @@
           if (!$rootScope.ngMeta) {
             throw new Error('Cannot call setTag when ngMeta is undefined. Did you forget to call ngMeta.init() in the run block? \nRefer: https://github.com/vinaygopinath/ngMeta#getting-started');
           }
+          if (tag === 'title' || tag === 'titleSuffix') {
+            throw new Error('Attempt to set \'' + tag + '\' through \'setTag\': \'title\' and \'titleSuffix\' are reserved tag names. Please use \'ngMeta.setTitle\' instead');
+          }
           $rootScope.ngMeta[tag] = angular.isDefined(value) ? value : defaults[tag];
         };
 

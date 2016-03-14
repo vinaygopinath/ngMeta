@@ -1,289 +1,237 @@
-describe('Service: ngMeta', function () {
+var SOME_TITLE = 'Hello';
+var SOME_TITLE_SUFFIX = ' | World';
+var SOME_DEFAULT_TITLE = 'Title';
+var SOME_DEFAULT_TITLE_SUFFIX = ' | Suffix';
 
-    'use strict';
 
-    // instantiate service
-    var ngMeta, $rootScope,
-        init = function () {
-            inject(function (_ngMeta_, _$rootScope_) {
-                ngMeta = _ngMeta_;
-                $rootScope = _$rootScope_;
-            });
-        };
+var SOME_TAG = 'image';
+var SOME_TAG_VALUE = 'http://example.com/image.png';
+var SOME_TAG_DEFAULT_VALUE = 'http://placeholder.com/picture.jpg';
 
-    var defaultVarName = 'ngMeta';
-    var defaultOgType = 'website';
-    var defaultOgSiteName = '';
-    var defaultOgLocale = 'en_US';
-    var someDefaultTitle = 'Title';
-    var someDefaultTitleSuffix = ' | Suffix';
 
-    // load the service's module
-    beforeEach(module('ngMeta'));
+describe('Provider: ngMetaProvider', function() {
 
-    it('should create a service', function () {
-        init();
+  describe('Basic checks', function() {
 
-        expect(!!ngMeta).toBe(true);
+    it('should provide the setDefaultTitle function', function() {
+      module(function(ngMetaProvider) {
+        expect(ngMetaProvider.setDefaultTitle).toBeDefined();
+      });
     });
 
-    describe('App-wide one-time configuration', function () {
-
-        describe('Variable name', function () {
-
-            it('should default to the ngMeta variable name', function () {
-
-                init();
-                //Simulate route change
-                $rootScope.$broadcast('$routeChangeSuccess', {});
-
-                expect($rootScope[defaultVarName]).toBeDefined();
-            });
-
-            it('should support changing the variable name', function () {
-
-                var someNewVarName = 'MetaTag';
-                module(function (ngMetaProvider) {
-                    ngMetaProvider.setName(someNewVarName);
-                });
-
-                init();
-                //Simulate route change
-                $rootScope.$broadcast('$routeChangeSuccess', {});
-
-                expect($rootScope[someNewVarName]).toBeDefined();
-            });
-        });
-
-        describe('Title suffix', function () {
-
-            it('should default to false on title suffix use', function () {
-
-                module(function (ngMetaProvider) {
-                    ngMetaProvider.useTitleSuffix(false);
-                    ngMetaProvider.setDefaultTitle(someDefaultTitle);
-                    ngMetaProvider.setDefaultTitleSuffix(someDefaultTitleSuffix);
-                });
-
-                init();
-                //Simulate route change
-                $rootScope.$broadcast('$routeChangeSuccess', {});
-
-                expect($rootScope[defaultVarName].title).toEqual(someDefaultTitle);
-            });
-
-            it('should use the title suffix when it is enabled', function () {
-
-                module(function (ngMetaProvider) {
-                    ngMetaProvider.useTitleSuffix(true);
-                    ngMetaProvider.setDefaultTitle(someDefaultTitle);
-                    ngMetaProvider.setDefaultTitleSuffix(someDefaultTitleSuffix);
-                });
-
-                init();
-                //Simulate route change
-                $rootScope.$broadcast('$routeChangeSuccess', {});
-
-                expect($rootScope[defaultVarName].title).toEqual(someDefaultTitle + someDefaultTitleSuffix);
-            });
-        });
-
-        describe('OpenGraph type', function () {
-
-            it('should default to website for og:type', function () {
-
-                init();
-                //Simulate route change
-                $rootScope.$broadcast('$routeChangeSuccess', {});
-
-                expect($rootScope[defaultVarName].ogType).toEqual(defaultOgType);
-            });
-
-            it('should support setting the og:type', function () {
-
-                var someOgType = 'article';
-                module(function (ngMetaProvider) {
-                    ngMetaProvider.setOgType(someOgType);
-                });
-
-                init();
-                //Simulate route change
-                $rootScope.$broadcast('$routeChangeSuccess', {});
-
-                expect($rootScope[defaultVarName].ogType).toEqual(someOgType);
-            });
-        });
-
-        describe('OpenGraph site name', function () {
-
-            it('should default to empty string for og:site_name', function () {
-
-                init();
-                //Simulate route change
-                $rootScope.$broadcast('$routeChangeSuccess', {});
-
-                expect($rootScope[defaultVarName].ogSiteName).toEqual(defaultOgSiteName);
-            });
-
-            it('should support setting the og:site_name', function () {
-
-                var someOgSiteName = 'GitHub';
-                module(function (ngMetaProvider) {
-                    ngMetaProvider.setOgSiteName(someOgSiteName);
-                });
-
-                init();
-                //Simulate route change
-                $rootScope.$broadcast('$routeChangeSuccess', {});
-
-                expect($rootScope[defaultVarName].ogSiteName).toEqual(someOgSiteName);
-            });
-        });
-
-        describe('OpenGraph locale', function () {
-
-            it('should default to en_US for og:locale', function () {
-
-                init();
-                //Simulate route change
-                $rootScope.$broadcast('$routeChangeSuccess', {});
-
-                expect($rootScope[defaultVarName].ogLocale).toEqual(defaultOgLocale);
-            });
-
-            it('should support setting the og:locale', function () {
-
-                var someOgLocale = 'en_IN';
-                module(function (ngMetaProvider) {
-                    ngMetaProvider.setOgLocale(someOgLocale);
-                });
-
-                init();
-                //Simulate route change
-                $rootScope.$broadcast('$routeChangeSuccess', {});
-
-                expect($rootScope[defaultVarName].ogLocale).toEqual(someOgLocale);
-            });
-        });
-
+    it('should provide the setDefaultTitleSuffix function', function() {
+      module(function(ngMetaProvider) {
+        expect(ngMetaProvider.setDefaultTitleSuffix).toBeDefined();
+      });
     });
 
-    describe('Defaults configuration', function () {
+    it('should provide the setDefaultTag function', function() {
+      module(function(ngMetaProvider) {
+        expect(ngMetaProvider.setDefaultTag).toBeDefined();
+      });
+    });
+  });
+});
 
-        it('should support setting a default title', function () {
+describe('Service: ngMeta', function() {
 
-            var someDefaultTitle = 'Lorem Ipsum';
-            module(function (ngMetaProvider) {
-                ngMetaProvider.setDefaultTitle(someDefaultTitle);
-            });
+  'use strict';
 
-            init();
-            //Simulate route change
-            $rootScope.$broadcast('$routeChangeSuccess', {});
+  var ngMeta, $rootScope;
 
-            expect($rootScope.ngMeta.title).toEqual(someDefaultTitle);
-        });
+  // instantiate service
+  var injectDependencies = function() {
+    inject(function(_ngMeta_, _$rootScope_) {
+      ngMeta = _ngMeta_;
+      $rootScope = _$rootScope_;
+    });
+  };
 
-        it('should support setting a default title suffix', function () {
+  // load the service's module
+  beforeEach(module('ngMeta'));
 
-            module(function (ngMetaProvider) {
-                ngMetaProvider.setDefaultTitle(someDefaultTitle);
-                ngMetaProvider.setDefaultTitleSuffix(someDefaultTitleSuffix);
-                ngMetaProvider.useTitleSuffix(true);
-            });
+  describe('Init: init()', function() {
 
-            init();
-            //Simulate route change
-            $rootScope.$broadcast('$routeChangeSuccess', {});
-
-            expect($rootScope.ngMeta.title).toEqual(someDefaultTitle + someDefaultTitleSuffix);
-        });
-
-        it('should support setting a default description', function () {
-
-            var someDescription = 'This is a description';
-            module(function (ngMetaProvider) {
-                ngMetaProvider.setDefaultDescription(someDescription);
-            });
-
-            init();
-            //Simulate route change
-            $rootScope.$broadcast('$routeChangeSuccess', {});
-
-            expect($rootScope[defaultVarName].description).toEqual(someDescription);
-        });
-
-        it('should support setting a default og:image', function () {
-
-            var someOgImgUrl = 'http://example.com/abc.jpg';
-            module(function (ngMetaProvider) {
-                ngMetaProvider.setDefaultOgImgUrl(someOgImgUrl);
-            });
-
-            init();
-            //Simulate route change
-            $rootScope.$broadcast('$routeChangeSuccess', {});
-
-            expect($rootScope[defaultVarName].ogImgUrl).toEqual(someOgImgUrl);
-        });
+    //Inject dependencies
+    beforeEach(function() {
+      injectDependencies();
     });
 
-    describe('Runtime functions', function () {
-
-        it('should support setting a title dynamically', function () {
-
-            var someTitle = 'ABCD';
-
-            ngMeta.setTitle(someTitle);
-
-            expect($rootScope[defaultVarName].title).toEqual(someTitle);
-        });
-
-        it('should support setting a description dynamically', function () {
-
-            var someDescription = 'Some description here';
-
-            ngMeta.setDescription(someDescription);
-
-            expect($rootScope[defaultVarName].description).toEqual(someDescription);
-        });
-
-        it('should support setting an og:image dynamically', function () {
-
-            var someOgImgUrl = 'http://example.com/123.jpg';
-
-            ngMeta.setOgImgUrl(someOgImgUrl);
-
-            expect($rootScope[defaultVarName].ogImgUrl).toEqual(someOgImgUrl);
-        });
+    it('should provide an init function', function() {
+      expect(ngMeta.init).toBeDefined();
     });
 
-    describe('Route navigation meta changes', function () {
-
-        it('should update meta tags with new meta object when the route changes', function () {
-
-            var firstRouteMeta = {
-                title: 'First title',
-                description: 'First description'
-            };
-            var secondRouteMeta = {
-                title: 'Second title',
-                description: 'Second description'
-            };
-            var firstRouteMock = {
-                meta: firstRouteMeta
-            };
-            var secondRouteMock = {
-                meta: secondRouteMeta
-            };
-
-            init();
-            //Simulate route change
-            $rootScope.$broadcast('$routeChangeSuccess', firstRouteMock);
-            $rootScope.$broadcast('$routeChangeSuccess', secondRouteMock);
-
-            expect($rootScope[defaultVarName].title).toEqual(secondRouteMeta.title);
-            expect($rootScope[defaultVarName].description).toEqual(secondRouteMeta.description);
-        });
+    //angular-route support
+    it('should set up a broadcast listener for $routeChangeSuccess', function() {
+      spyOn($rootScope, '$on');
+      ngMeta.init();
+      expect($rootScope.$on).toHaveBeenCalledWith('$routeChangeSuccess', jasmine.any(Function));
     });
+
+    //ui-router support
+    it('should set up a broadcast listener for $stateChangeSuccess', function() {
+      spyOn($rootScope, '$on');
+      ngMeta.init();
+      expect($rootScope.$on).toHaveBeenCalledWith('$stateChangeSuccess', jasmine.any(Function));
+    });
+  });
+
+  describe('Title: setTitle()', function() {
+
+    describe('Basic checks', function() {
+
+      //Inject dependencies
+      beforeEach(function() {
+        injectDependencies();
+      });
+
+      it('should provide the setTitle() function', function() {
+        expect(ngMeta.setTitle).toBeDefined();
+      });
+
+      it('should throw an error when init has not been called', function() {
+        expect(ngMeta.setTitle).toThrow();
+      });
+    });
+
+    describe('Default Functionality', function() {
+
+      beforeEach(function() {
+        injectDependencies();
+        ngMeta.init();
+      });
+
+      it('should update the title', function() {
+        ngMeta.setTitle(SOME_TITLE);
+        expect($rootScope.ngMeta.title).toBe(SOME_TITLE);
+      });
+
+      it('should ignore the titleSuffix param by default', function() {
+        ngMeta.setTitle(SOME_TITLE, SOME_TITLE_SUFFIX);
+        expect($rootScope.ngMeta.title).toBe(SOME_TITLE);
+      });
+    });
+
+    describe('Customized Functionality', function() {
+
+      it('should use the titleSuffix param when useTitleSuffix config is enabled', function() {
+        module(function(ngMetaProvider) {
+          ngMetaProvider.useTitleSuffix(true);
+        });
+        injectDependencies();
+        ngMeta.init();
+
+        ngMeta.setTitle(SOME_TITLE, SOME_TITLE_SUFFIX);
+
+        expect($rootScope.ngMeta.title).toBe(SOME_TITLE + SOME_TITLE_SUFFIX);
+      });
+
+      it('should use the default titleSuffix param when useTitleSuffix is enabled and no titleSuffix argument is provided', function() {
+        module(function(ngMetaProvider) {
+          ngMetaProvider.useTitleSuffix(true);
+          ngMetaProvider.setDefaultTitleSuffix(SOME_DEFAULT_TITLE_SUFFIX);
+        });
+        injectDependencies();
+        ngMeta.init();
+
+        ngMeta.setTitle(SOME_TITLE);
+
+        expect($rootScope.ngMeta.title).toBe(SOME_TITLE + SOME_DEFAULT_TITLE_SUFFIX);
+      });
+
+      it('should override the default titleSuffix param when useTitleSuffix is enabled and a titleSuffix argument is provided', function() {
+        module(function(ngMetaProvider) {
+          ngMetaProvider.useTitleSuffix(true);
+          ngMetaProvider.setDefaultTitleSuffix(SOME_DEFAULT_TITLE_SUFFIX);
+        });
+        injectDependencies();
+        ngMeta.init();
+
+        ngMeta.setTitle(SOME_TITLE, SOME_TITLE_SUFFIX);
+
+        expect($rootScope.ngMeta.title).toBe(SOME_TITLE + SOME_TITLE_SUFFIX);
+      });
+
+      it('should use the default title [and default titleSuffix] when no arguments are provided', function() {
+        module(function(ngMetaProvider) {
+          ngMetaProvider.useTitleSuffix(true);
+          ngMetaProvider.setDefaultTitle(SOME_DEFAULT_TITLE);
+          ngMetaProvider.setDefaultTitleSuffix(SOME_DEFAULT_TITLE_SUFFIX);
+        });
+        injectDependencies();
+        ngMeta.init();
+
+        ngMeta.setTitle();
+
+        expect($rootScope.ngMeta.title).toBe(SOME_DEFAULT_TITLE + SOME_DEFAULT_TITLE_SUFFIX);
+      });
+    });
+  });
+
+  describe('Tag: setTag()', function() {
+
+    describe('Basic checks', function() {
+      //Inject dependencies
+      beforeEach(function() {
+        injectDependencies();
+      });
+
+      it('should provide the setTag() function', function() {
+        expect(ngMeta.setTag).toBeDefined();
+      });
+
+      it('should throw an error when init has not been called', function() {
+        expect(ngMeta.setTag).toThrow();
+      });
+
+      it('should throw an error when the tag name is title', function() {
+        ngMeta.init();
+        expect(function() {
+          ngMeta.setTag('title', SOME_TAG_VALUE);
+        }).toThrow();
+      });
+
+      it('should throw an error when the tag name is titleSuffix', function() {
+        ngMeta.init();
+        expect(function() {
+          ngMeta.setTag('titleSuffix', SOME_TAG_VALUE);
+        }).toThrow();
+      });
+    });
+
+    describe('Default Functionality', function() {
+
+      beforeEach(function() {
+        injectDependencies();
+        ngMeta.init();
+      });
+
+      it('should set the tag to the given value', function() {
+        ngMeta.setTag(SOME_TAG, SOME_TAG_VALUE);
+        expect($rootScope.ngMeta[SOME_TAG]).toBe(SOME_TAG_VALUE);
+      });
+    });
+
+    describe('Customized Functionality', function() {
+
+      beforeEach(function() {
+        module(function(ngMetaProvider) {
+          ngMetaProvider.setDefaultTag(SOME_TAG, SOME_TAG_DEFAULT_VALUE);
+        });
+        injectDependencies();
+        ngMeta.init();
+      });
+
+      it('should use the default tag value when the tag value is not available', function() {
+        ngMeta.setTag(SOME_TAG);
+        expect($rootScope.ngMeta[SOME_TAG]).toBe(SOME_TAG_DEFAULT_VALUE);
+      });
+
+      it('should override the default tag value when the tag value is available', function() {
+        ngMeta.setTag(SOME_TAG, SOME_TAG_VALUE);
+        expect($rootScope.ngMeta[SOME_TAG]).toBe(SOME_TAG_VALUE);
+      });
+    });
+  });
+
 });

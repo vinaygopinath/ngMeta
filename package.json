@@ -44,7 +44,7 @@
     "karma": "^0.13.9",
     "karma-jasmine": "^0.3.6",
     "karma-mocha-reporter": "^1.1.1",
-    "karma-phantomjs-launcher": "^0.2.1",
+    "karma-phantomjs2-launcher": "^0.5.0",
     "phantomjs": "^1.9.18"
   }
 }

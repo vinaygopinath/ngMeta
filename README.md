@@ -1,6 +1,7 @@
 # ngMeta
-
 > Dynamic meta tags in your AngularJS single page application
+
+[![Build Status](https://travis-ci.org/vinaygopinath/ngMeta.svg?branch=master)](https://travis-ci.org/vinaygopinath/ngMeta)
 
 * [Demo](#demo)
 * [Install](#install)

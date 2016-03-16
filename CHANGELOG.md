@@ -1,9 +1,20 @@
 #Changelog
 
+## [v0.3.6](https://github.com/vinaygopinath/ngMeta/releases/tag/v0.3.6)
+
+##### Features
+* An error is thrown when `ngMeta.setTag()` is called with `title` or `titleSuffix`. This is to force the use of `ngMeta.setTitle()` for modifications of the title.
+* [#6](https://github.com/vinaygopinath/ngMeta/issues/6) Improved structure and examples in README
+* [#7](https://github.com/vinaygopinath/ngMeta/issues/7) Unit tests are now in sync with the latest code
+* Travis CI integration
+
+##### Bugfixes
+* Problems updating package versions on both Bower and npm are fixed.
+
 ## [v0.3.3](https://github.com/vinaygopinath/ngMeta/releases/tag/v0.3.3)
 
 ##### Features
-* An error is shown when `ngMeta.setTitle()` or `ngMeta.setTag()` is used without initializing ngMeta in the run phase using `ngMeta.init()`
+* An error is thrown when `ngMeta.setTitle()` or `ngMeta.setTag()` is used without initializing ngMeta in the run phase using `ngMeta.init()`
 
 ## [v0.3.2](https://github.com/vinaygopinath/ngMeta/releases/tag/v0.3.2)
 

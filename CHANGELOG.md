@@ -1,5 +1,18 @@
 #Changelog
 
+## [v0.3.7](https://github.com/vinaygopinath/ngMeta/releases/tag/v0.3.7)
+
+##### Features
+* Method chaining for ngMeta and ngMetaProvider
+  ```javascript
+  ngMetaProvider
+            .setDefaultTag('ogImage', 'http://url.com/picture.jpg')
+            .setDefaultTag('ogSiteName', 'Site Name')
+            .useTitleSuffix(true)
+            .setDefaultTitleSuffix(' - Demcoach');
+  ```
+* Improved method documentation
+
 ## [v0.3.6](https://github.com/vinaygopinath/ngMeta/releases/tag/v0.3.6)
 
 ##### Features

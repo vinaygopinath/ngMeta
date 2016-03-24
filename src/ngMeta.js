@@ -35,8 +35,8 @@
       function Meta($rootScope) {
 
         /**
-         * @ngdoc function
-         * @name setTitle
+         * @ngdoc method
+         * @name ngMeta#setTitle
          * @description
          * Sets the title of the page, optionally
          * appending a title suffix.
@@ -52,6 +52,8 @@
          * //title only (default titleSuffix may be suffixed,
          * //depending on useTitleSuffix configuration)
          * ngMeta.setTitle('Page name');
+         *
+         * @returns {Object} self
          */
         var setTitle = function(title, titleSuffix) {
           if (!$rootScope.ngMeta) {
@@ -61,11 +63,12 @@
           if (config.useTitleSuffix) {
             $rootScope.ngMeta.title += angular.isDefined(titleSuffix) ? titleSuffix : defaults.titleSuffix;
           }
+          return this;
         };
 
         /**
-         * @ngdoc function
-         * @name setTag
+         * @ngdoc method
+         * @name ngMeta#setTag
          * @description
          * Sets the value of a meta tag, using
          * the default value (if available) as
@@ -73,6 +76,8 @@
          *
          * @example
          * ngMeta.setTag('og:image', 'http://example.com/a.png');
+         *
+         * @returns {Object} self
          */
         var setTag = function(tag, value) {
           if (!$rootScope.ngMeta) {
@@ -82,10 +87,11 @@
             throw new Error('Attempt to set \'' + tag + '\' through \'setTag\': \'title\' and \'titleSuffix\' are reserved tag names. Please use \'ngMeta.setTitle\' instead');
           }
           $rootScope.ngMeta[tag] = angular.isDefined(value) ? value : defaults[tag];
+          return this;
         };
 
         /**
-         * @ngdoc function
+         * @ngdoc method
          * @name readRouteMeta
          * @description
          * Helper function to process meta tags on route/state
@@ -97,6 +103,8 @@
          *    and sets their values
          * 3. Iterates through all default tags and sets the ones
          *    that were not utilized while setting the state/route tags.
+         *
+         * @returns {Object} self
          */
         var readRouteMeta = function(meta) {
           meta = meta || {};
@@ -129,8 +137,8 @@
         };
 
         /**
-         * @ngdoc function
-         * @name init
+         * @ngdoc method
+         * @name ngMeta#init
          * @description
          * Initializes the ngMeta object and sets up
          * listeners for route/state change broadcasts
@@ -159,22 +167,78 @@
 
       /* Set defaults */
 
+      /**
+       * @ngdoc method
+       * @name ngMetaProvider#setDefaultTitle
+       * @param {string} titleStr The default title of the page. If a
+       * route/state does not define a `title` param in its meta object, this
+       * value is used instead.
+       *
+       * @description
+       * Sets the default title for all routes that are missing a custom `title`
+       * property in their meta objects.
+       *
+       * @returns {Object} self
+       */
       this.setDefaultTitle = function(titleStr) {
         defaults.title = titleStr;
+        return this;
       };
 
+      /**
+       * @ngdoc method
+       * @name ngMetaProvider#setDefaultTitleSuffix
+       * @param {string} titleSuffix The default title suffix of the page. If a
+       * route/state does not define a `titleSuffix` param in its meta object,
+       * this value is used instead.
+       *
+       * @description
+       * Sets the default title suffix for all routes that are missing a custom
+       * `titleSuffix` property in their meta objects.
+       *
+       * @returns {Object} self
+       */
       this.setDefaultTitleSuffix = function(titleSuffix) {
         defaults.titleSuffix = titleSuffix;
+        return this;
       };
 
+      /**
+       * @ngdoc method
+       * @name ngMetaProvider#setDefaultTag
+       * @param {string} tag The default tag name. The default tag can be
+       * overridden by defining a custom property of the same name in the meta
+       * object of any route.
+       *
+       * @param {string} value The value of the tag.
+       *
+       * @description
+       * Sets the default tag for all routes that are missing a custom
+       * `tag` property in their meta objects.
+       *
+       * @returns {Object} self
+       */
       this.setDefaultTag = function(tag, value) {
         defaults[tag] = value;
+        return this;
       };
 
       /* One-time config */
 
+      /**
+       * @ngdoc method
+       * @name ngMetaProvider#useTitleSuffix
+       * @param {boolean} bool A boolean indicating the use of title suffix.
+       * Defaults to false.
+       *
+       * @description
+       * Toggles the use of the title suffix throughout the site.
+       *
+       * @returns {Object} self
+       */
       this.useTitleSuffix = function(bool) {
         config.useTitleSuffix = !!bool;
+        return this;
       };
 
       this.$get = function($rootScope) {

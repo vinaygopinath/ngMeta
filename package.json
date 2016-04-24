@@ -1,6 +1,6 @@
 {
   "name": "ng-meta",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "description": "Meta tags support for AngularJS single page applications (SPA)",
   "main": "src/ngMeta.js",
   "directories": {

@@ -109,6 +109,10 @@
         var readRouteMeta = function(meta) {
           meta = meta || {};
 
+          if (meta.disableUpdate) {
+            return false;
+          }
+
           setTitle(meta.title, meta.titleSuffix);
 
           var def = angular.copy(defaults);

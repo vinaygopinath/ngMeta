@@ -1,5 +1,11 @@
 #Changelog
 
+## [v0.3.8](https://github.com/vinaygopinath/ngMeta/releases/tag/v0.3.8)
+
+##### Features
+
+* [#10](https://github.com/vinaygopinath/ngMeta/issues/10) `disableUpdate` option to disable $stateChangeSuccess updates for particular states (to be used in conjuction with state resolve functions)
+
 ## [v0.3.7](https://github.com/vinaygopinath/ngMeta/releases/tag/v0.3.7)
 
 ##### Features

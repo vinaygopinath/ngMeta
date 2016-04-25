@@ -1,5 +1,11 @@
 #Changelog
 
+## [v0.3.9](https://github.com/vinaygopinath/ngMeta/releases/tag/v0.3.9)
+
+##### Bugfixes
+
+* [#11](https://github.com/vinaygopinath/ngMeta/issues/11) Changed bower.json `main` path from `src/ngMeta.js` to `dist/ngMeta.js` since src is excluded from the Bower release as of v0.3.8
+
 ## [v0.3.8](https://github.com/vinaygopinath/ngMeta/releases/tag/v0.3.8)
 
 ##### Features

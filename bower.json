@@ -5,7 +5,7 @@
     "Vinay Gopinath <vinayg18@gmail.com>"
   ],
   "description": "Meta tags support for AngularJS single page applications (SPA)",
-  "main": "src/ngMeta.js",
+  "main": "dist/ngMeta.js",
   "keywords": [
     "angularjs",
     "meta",

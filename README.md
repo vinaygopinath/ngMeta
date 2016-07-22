@@ -3,6 +3,7 @@
 
 [![npm version](https://badge.fury.io/js/ng-meta.svg)](https://badge.fury.io/js/ng-meta) [![Build Status](https://travis-ci.org/vinaygopinath/ngMeta.svg?branch=master)](https://travis-ci.org/vinaygopinath/ngMeta)
 
+This is an Angular 1.x module. Angular2 module is available as [ng2-meta](https://github.com/vinaygopinath/ng2-meta)
 * [Demo](#demo)
 * [Install](#install)
 * [Getting Started](#getting-started)

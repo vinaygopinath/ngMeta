@@ -29,6 +29,10 @@ via Bower:
 ```shell
 bower install ngMeta --save
 ```
+via CDN:
+```shell
+https://cdnjs.cloudflare.com/ajax/libs/ng-meta/0.3.9/ngMeta.min.js
+```
 
 or download the file from [dist](https://github.com/vinaygopinath/ngMeta/tree/master/dist).
 

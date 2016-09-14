@@ -25,7 +25,10 @@
       'use strict';
 
       //Object for storing default tag/values
-      var defaults = {};
+      var defaults = {
+        title: '',
+        titleSuffix: ''
+      };
 
       //One-time configuration
       var config = {
@@ -87,6 +90,60 @@
             throw new Error('Attempt to set \'' + tag + '\' through \'setTag\': \'title\' and \'titleSuffix\' are reserved tag names. Please use \'ngMeta.setTitle\' instead');
           }
           $rootScope.ngMeta[tag] = angular.isDefined(value) ? value : defaults[tag];
+          return this;
+        };
+
+        /**
+         * @ngdoc method
+         * @name ngMeta#setDefaultTag
+         * @description
+         * Sets the default tag for all routes that are missing a custom
+         * `tag` property in their meta objects.
+         *
+         * @example
+         * ngMeta.setDefaultTag('titleSuffix', ' | Tagline of the site');
+         *
+         * @returns {Object} self
+         */
+        var setDefaultTag = function(tag, value) {
+          if (!$rootScope.ngMeta) {
+            throw new Error('Cannot call setDefaultTag when ngMeta is undefined. Did you forget to call ngMeta.init() in the run block? \nRefer: https://github.com/vinaygopinath/ngMeta#getting-started');
+          }
+
+          if (tag === 'title') {
+            if (angular.isDefined($rootScope.ngMeta.title)) {
+              //if currently using default title, change the current title
+              if ((defaults.title === '') && 
+                    (($rootScope.ngMeta.title === defaults.title) ||
+                      (config.useTitleSuffix && ($rootScope.ngMeta.title === defaults.titleSuffix)))) {
+                $rootScope.ngMeta.title = value + $rootScope.ngMeta.title;
+              } else if ($rootScope.ngMeta.title.startsWith(defaults.title)) {
+                $rootScope.ngMeta.title.replace(defaults.title, value);
+              }
+            } else {
+              $rootScope.ngMeta.title = value + (config.useTitleSuffix ? defaults.titleSuffix : '');
+            }
+          } else if (tag === 'titleSuffix') {
+            if (config.useTitleSuffix) {
+              if (angular.isDefined($rootScope.ngMeta.title)) {
+                //if currently using default titleSuffix, change the current titleSuffix
+                if ((defaults.titleSuffix === '') && ($rootScope.ngMeta.title === defaults.title)) {
+                  $rootScope.ngMeta.title += value;
+                } else if ($rootScope.ngMeta.title.endsWith(defaults.titleSuffix)) {
+                  $rootScope.ngMeta.title.replace(defaults.titleSuffix, value);
+                }
+              } else {
+                $rootScope.ngMeta.title = defaults.title + value;
+              }
+            }
+          } else {
+            //if currently using default tag (or was undefined), change/set the current tag
+            if ((angular.isUndefined(defaults[tag]) && angular.isUndefined($rootScope.ngMeta[tag])) || ($rootScope.ngMeta[tag] === defaults[tag])) {
+              $rootScope.ngMeta[tag] = value;
+            }
+          }
+
+          defaults[tag] = value;
           return this;
         };
 
@@ -165,7 +222,8 @@
         return {
           'init': init,
           'setTitle': setTitle,
-          'setTag': setTag
+          'setTag': setTag,
+          'setDefaultTag': setDefaultTag
         };
       }
 

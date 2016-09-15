@@ -25,10 +25,10 @@
       'use strict';
 
       //Object for storing default tag/values
-      var defaults = {
-        title: '',
-        titleSuffix: ''
-      };
+      var defaults = {};
+
+      //Object for storing the current route's custom meta object
+      var currentRouteMeta = {};
 
       //One-time configuration
       var config = {
@@ -62,9 +62,12 @@
           if (!$rootScope.ngMeta) {
             throw new Error('Cannot call setTitle when ngMeta is undefined. Did you forget to call ngMeta.init() in the run block? \nRefer: https://github.com/vinaygopinath/ngMeta#getting-started');
           }
-          $rootScope.ngMeta.title = angular.isDefined(title) ? title : defaults.title;
+          currentRouteMeta.title = title;
+          currentRouteMeta.titleSuffix = titleSuffix;
+
+          $rootScope.ngMeta.title = angular.isDefined(title) ? title : (defaults.title || '');
           if (config.useTitleSuffix) {
-            $rootScope.ngMeta.title += angular.isDefined(titleSuffix) ? titleSuffix : defaults.titleSuffix;
+            $rootScope.ngMeta.title += angular.isDefined(titleSuffix) ? titleSuffix : (defaults.titleSuffix || '');
           }
           return this;
         };
@@ -89,6 +92,8 @@
           if (tag === 'title' || tag === 'titleSuffix') {
             throw new Error('Attempt to set \'' + tag + '\' through \'setTag\': \'title\' and \'titleSuffix\' are reserved tag names. Please use \'ngMeta.setTitle\' instead');
           }
+          currentRouteMeta[tag] = value;
+
           $rootScope.ngMeta[tag] = angular.isDefined(value) ? value : defaults[tag];
           return this;
         };
@@ -110,40 +115,14 @@
             throw new Error('Cannot call setDefaultTag when ngMeta is undefined. Did you forget to call ngMeta.init() in the run block? \nRefer: https://github.com/vinaygopinath/ngMeta#getting-started');
           }
 
-          if (tag === 'title') {
-            if (angular.isDefined($rootScope.ngMeta.title)) {
-              //if currently using default title, change the current title
-              if ((defaults.title === '') && 
-                    (($rootScope.ngMeta.title === defaults.title) ||
-                      (config.useTitleSuffix && ($rootScope.ngMeta.title === defaults.titleSuffix)))) {
-                $rootScope.ngMeta.title = value + $rootScope.ngMeta.title;
-              } else if ($rootScope.ngMeta.title.startsWith(defaults.title)) {
-                $rootScope.ngMeta.title.replace(defaults.title, value);
-              }
-            } else {
-              $rootScope.ngMeta.title = value + (config.useTitleSuffix ? defaults.titleSuffix : '');
-            }
-          } else if (tag === 'titleSuffix') {
-            if (config.useTitleSuffix) {
-              if (angular.isDefined($rootScope.ngMeta.title)) {
-                //if currently using default titleSuffix, change the current titleSuffix
-                if ((defaults.titleSuffix === '') && ($rootScope.ngMeta.title === defaults.title)) {
-                  $rootScope.ngMeta.title += value;
-                } else if ($rootScope.ngMeta.title.endsWith(defaults.titleSuffix)) {
-                  $rootScope.ngMeta.title.replace(defaults.titleSuffix, value);
-                }
-              } else {
-                $rootScope.ngMeta.title = defaults.title + value;
-              }
-            }
+          defaults[tag] = value;
+
+          if (tag === 'title' || tag === 'titleSuffix') {
+            setTitle(currentRouteMeta.title, currentRouteMeta.titleSuffix);
           } else {
-            //if currently using default tag (or was undefined), change/set the current tag
-            if ((angular.isUndefined(defaults[tag]) && angular.isUndefined($rootScope.ngMeta[tag])) || ($rootScope.ngMeta[tag] === defaults[tag])) {
-              $rootScope.ngMeta[tag] = value;
-            }
+            setTag(tag, currentRouteMeta[tag]);
           }
 
-          defaults[tag] = value;
           return this;
         };
 
@@ -165,6 +144,8 @@
          */
         var readRouteMeta = function(meta) {
           meta = meta || {};
+
+          currentRouteMeta = angular.copy(meta);
 
           if (meta.disableUpdate) {
             return false;

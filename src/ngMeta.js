@@ -32,8 +32,7 @@
 
       //One-time configuration
       var config = {
-        useTitleSuffix: false,
-        useSuffixOnlyCustomTitle: false
+        useTitleSuffix: false
       };
 
       function Meta($rootScope) {
@@ -64,7 +63,7 @@
             throw new Error('Cannot call setTitle when ngMeta is undefined. Did you forget to call ngMeta.init() in the run block? \nRefer: https://github.com/vinaygopinath/ngMeta#getting-started');
           }
           $rootScope.ngMeta.title = angular.isDefined(title) ? title : defaults.title;
-          if (config.useTitleSuffix && (!config.useSuffixOnlyCustomTitle || angular.isDefined(title))) {
+          if (config.useTitleSuffix) {
             $rootScope.ngMeta.title += angular.isDefined(titleSuffix) ? titleSuffix : defaults.titleSuffix;
           }
           return this;
@@ -122,23 +121,19 @@
                 $rootScope.ngMeta.title.replace(defaults.title, value);
               }
             } else {
-              $rootScope.ngMeta.title = value;
-              if (config.useTitleSuffix) {
-                $rootScope.ngMeta.title += (config.useSuffixOnlyCustomTitle ? '' : defaults.titleSuffix);
-              }
+              $rootScope.ngMeta.title = value + (config.useTitleSuffix ? defaults.titleSuffix : '');
             }
           } else if (tag === 'titleSuffix') {
             if (config.useTitleSuffix) {
               if (angular.isDefined($rootScope.ngMeta.title)) {
                 //if currently using default titleSuffix, change the current titleSuffix
                 if ((defaults.titleSuffix === '') && ($rootScope.ngMeta.title === defaults.title)) {
-                  $rootScope.ngMeta.title += (config.useSuffixOnlyCustomTitle ? '' : value);
+                  $rootScope.ngMeta.title += value;
                 } else if ($rootScope.ngMeta.title.endsWith(defaults.titleSuffix)) {
                   $rootScope.ngMeta.title.replace(defaults.titleSuffix, value);
                 }
               } else {
-                $rootScope.ngMeta.title = defaults.title;
-                $rootScope.ngMeta.title += (config.useSuffixOnlyCustomTitle ? '' : value);
+                $rootScope.ngMeta.title = defaults.title + value;
               }
             }
           } else {
@@ -305,24 +300,6 @@
        */
       this.useTitleSuffix = function(bool) {
         config.useTitleSuffix = !!bool;
-        return this;
-      };
-
-      /**
-       * @ngdoc method
-       * @name ngMetaProvider#useSuffixOnlyCustomTitle
-       * @param {boolean} bool A boolean indicating if the title suffix
-       * should only be used when the default title is not being used.
-       * Defaults to false.
-       *
-       * @description
-       * Toggles the use of the title suffix throughout the site when a
-       * custom title is set by the state/route.
-       *
-       * @returns {Object} self
-       */
-      this.useSuffixOnlyCustomTitle = function(bool) {
-        config.useSuffixOnlyCustomTitle = !!bool;
         return this;
       };
 

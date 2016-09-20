@@ -234,4 +234,86 @@ describe('Service: ngMeta', function() {
     });
   });
 
+  describe('Default tag: setDefaultTag()', function() {
+
+    describe('Basic checks', function() {
+      //Inject dependencies
+      beforeEach(function() {
+        injectDependencies();
+      });
+
+      it('should provide the setDefaultTag() function', function() {
+        expect(ngMeta.setDefaultTag).toBeDefined();
+      });
+
+      it('should throw an error when init has not been called', function() {
+        expect(ngMeta.setDefaultTag).toThrow();
+      });
+    });
+
+    describe('Standard Functionality', function() {
+
+      beforeEach(function() {
+        injectDependencies();
+      });
+
+      it('should set the default tag to the given value', function() {
+        ngMeta.init();
+        ngMeta.setDefaultTag(SOME_TAG, SOME_TAG_VALUE);
+        expect($rootScope.ngMeta[SOME_TAG]).toBe(SOME_TAG_VALUE);
+      });
+
+      it('should call setTitle when the default title or default titleSuffix is set', function() {
+        spyOn(ngMeta, 'setTitle');
+        ngMeta.init();
+        ngMeta.setDefaultTag('title', SOME_DEFAULT_TITLE);
+        expect(ngMeta.setTitle).toHaveBeenCalled();
+      });
+
+      it('should call setTag when any tag other than default title/titleSuffix is set', function() {
+        spyOn(ngMeta, 'setTag');
+        ngMeta.init();
+        ngMeta.setDefaultTag(SOME_TAG, SOME_TAG_DEFAULT_VALUE);
+        expect(ngMeta.setTag).toHaveBeenCalled();
+      });
+
+      it('should immediately set the current title when title is not set by route/default value', function() {
+        ngMeta.init();
+        ngMeta.setDefaultTag('title', SOME_DEFAULT_TITLE);
+        expect($rootScope.ngMeta.title).toEqual(SOME_DEFAULT_TITLE);
+      });
+
+      it('should immediately set the current tag value when tag is not set by route/default value', function() {
+        ngMeta.init();
+        ngMeta.setDefaultTag(SOME_TAG, SOME_TAG_DEFAULT_VALUE);
+        expect($rootScope.ngMeta[SOME_TAG]).toEqual(SOME_TAG_DEFAULT_VALUE);
+      });
+    });
+
+    describe('Custom functionality', function() {
+
+      beforeEach(function() {
+        module(function(ngMetaProvider) {
+          ngMetaProvider.setDefaultTag(SOME_TAG, SOME_TAG_DEFAULT_VALUE);
+        });
+        injectDependencies();
+        ngMeta.init();
+      });
+
+      it('should overwrite a previous default value', function() {
+        ngMeta.setDefaultTag(SOME_TAG, SOME_TAG_VALUE);
+
+        expect($rootScope.ngMeta[SOME_TAG]).not.toEqual(SOME_TAG_DEFAULT_VALUE);
+      });
+
+      it('should not overwrite a non-default value', function() {
+        ngMeta.setTitle(SOME_TITLE);
+
+        ngMeta.setDefaultTag('title', SOME_DEFAULT_TITLE);
+
+        expect($rootScope.ngMeta.title).toEqual(SOME_TITLE);
+      });
+    });
+  });
+
 });

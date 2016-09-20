@@ -27,9 +27,6 @@
       //Object for storing default tag/values
       var defaults = {};
 
-      //Object for storing the current route's custom meta object
-      var currentRouteMeta = {};
-
       //One-time configuration
       var config = {
         useTitleSuffix: false
@@ -62,8 +59,6 @@
           if (!$rootScope.ngMeta) {
             throw new Error('Cannot call setTitle when ngMeta is undefined. Did you forget to call ngMeta.init() in the run block? \nRefer: https://github.com/vinaygopinath/ngMeta#getting-started');
           }
-          currentRouteMeta.title = title;
-          currentRouteMeta.titleSuffix = titleSuffix;
 
           $rootScope.ngMeta.title = angular.isDefined(title) ? title : (defaults.title || '');
           if (config.useTitleSuffix) {
@@ -92,7 +87,6 @@
           if (tag === 'title' || tag === 'titleSuffix') {
             throw new Error('Attempt to set \'' + tag + '\' through \'setTag\': \'title\' and \'titleSuffix\' are reserved tag names. Please use \'ngMeta.setTitle\' instead');
           }
-          currentRouteMeta[tag] = value;
 
           $rootScope.ngMeta[tag] = angular.isDefined(value) ? value : defaults[tag];
           return this;
@@ -118,9 +112,9 @@
           defaults[tag] = value;
 
           if (tag === 'title' || tag === 'titleSuffix') {
-            setTitle(currentRouteMeta.title, currentRouteMeta.titleSuffix);
+            this.setTitle($rootScope.ngMeta.title, $rootScope.ngMeta.titleSuffix);
           } else {
-            setTag(tag, currentRouteMeta[tag]);
+            this.setTag(tag, $rootScope.ngMeta[tag]);
           }
 
           return this;
@@ -144,8 +138,6 @@
          */
         var readRouteMeta = function(meta) {
           meta = meta || {};
-
-          currentRouteMeta = angular.copy(meta);
 
           if (meta.disableUpdate) {
             return false;

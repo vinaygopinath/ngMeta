@@ -59,9 +59,10 @@
           if (!$rootScope.ngMeta) {
             throw new Error('Cannot call setTitle when ngMeta is undefined. Did you forget to call ngMeta.init() in the run block? \nRefer: https://github.com/vinaygopinath/ngMeta#getting-started');
           }
-          $rootScope.ngMeta.title = angular.isDefined(title) ? title : defaults.title;
+
+          $rootScope.ngMeta.title = angular.isDefined(title) ? title : (defaults.title || '');
           if (config.useTitleSuffix) {
-            $rootScope.ngMeta.title += angular.isDefined(titleSuffix) ? titleSuffix : defaults.titleSuffix;
+            $rootScope.ngMeta.title += angular.isDefined(titleSuffix) ? titleSuffix : (defaults.titleSuffix || '');
           }
           return this;
         };
@@ -86,7 +87,36 @@
           if (tag === 'title' || tag === 'titleSuffix') {
             throw new Error('Attempt to set \'' + tag + '\' through \'setTag\': \'title\' and \'titleSuffix\' are reserved tag names. Please use \'ngMeta.setTitle\' instead');
           }
+
           $rootScope.ngMeta[tag] = angular.isDefined(value) ? value : defaults[tag];
+          return this;
+        };
+
+        /**
+         * @ngdoc method
+         * @name ngMeta#setDefaultTag
+         * @description
+         * Sets the default tag for all routes that are missing a custom
+         * `tag` property in their meta objects.
+         *
+         * @example
+         * ngMeta.setDefaultTag('titleSuffix', ' | Tagline of the site');
+         *
+         * @returns {Object} self
+         */
+        var setDefaultTag = function(tag, value) {
+          if (!$rootScope.ngMeta) {
+            throw new Error('Cannot call setDefaultTag when ngMeta is undefined. Did you forget to call ngMeta.init() in the run block? \nRefer: https://github.com/vinaygopinath/ngMeta#getting-started');
+          }
+
+          defaults[tag] = value;
+
+          if (tag === 'title' || tag === 'titleSuffix') {
+            this.setTitle($rootScope.ngMeta.title, $rootScope.ngMeta.titleSuffix);
+          } else {
+            this.setTag(tag, $rootScope.ngMeta[tag]);
+          }
+
           return this;
         };
 
@@ -165,7 +195,8 @@
         return {
           'init': init,
           'setTitle': setTitle,
-          'setTag': setTag
+          'setTag': setTag,
+          'setDefaultTag': setDefaultTag
         };
       }
 

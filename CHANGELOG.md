@@ -1,5 +1,11 @@
 #Changelog
 
+## [v0.3.10](https://github.com/vinaygopinath/ngMeta/releases/tag/v0.3.10)
+
+##### Features
+
+* [#15](https://github.com/vinaygopinath/ngMeta/issues/15) New 'setDefaultTag` function to dynamically update default values (Thanks [@xon88](https://github.com/xon88))
+
 ## [v0.3.9](https://github.com/vinaygopinath/ngMeta/releases/tag/v0.3.9)
 
 ##### Bugfixes

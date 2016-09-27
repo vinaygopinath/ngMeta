@@ -32,7 +32,7 @@
         useTitleSuffix: false
       };
 
-      function Meta($rootScope, $injector) {
+      function Meta($rootScope) {
 
         /**
          * @ngdoc method
@@ -196,17 +196,7 @@
         var init = function() {
           $rootScope.ngMeta = {};
           $rootScope.$on('$routeChangeSuccess', update);
-          $rootScope.$on('$stateChangeSuccess', function(event, toState) {
-            var $state = $injector.get('$state');
-            var stateParent = $state.get('^');
-            if ( stateParent) {
-              if (stateParent.data && stateParent.data.meta) {
-                toState.data.meta = angular.merge(stateParent.data.meta, toState.data.meta);
-              }
-            }
-
-            return update(event, toState);
-          });
+          $rootScope.$on('$stateChangeSuccess', update);
         };
 
         return {
@@ -293,8 +283,36 @@
         return this;
       };
 
-      this.$get = function($rootScope, $injector) {
-        return new Meta($rootScope, $injector);
+      /**
+       * @ngdoc method
+       * @name ngMetaProvider#mergeNestedStateData
+       * @param {string} mergeNestedStateData [Optional] method to deep merge
+       * meta data for nested views.
+       *
+       * @description
+       * Helper function to Extend $stateProvider.decorator('state') to merge nested
+       * view meta data if using ui-router.
+       *
+       * @returns {Object} data
+       */
+      this.mergeNestedStateData = function(state, parentDecoratorFn) {
+      // original data
+        var originalData = parentDecoratorFn(state) || {};
+
+        // create new merged meta
+        var parentMetaData = state.parent && state.parent.data && state.parent.data.meta;
+        var mergedMeta = angular.merge({}, parentMetaData, originalData.meta);
+
+        //Assign the merged meta if necessary to current state and return
+        if (originalData.meta || parentMetaData) {
+          originalData.meta = mergedMeta;
+        }
+        return state.self.data = originalData
+      };
+
+
+      this.$get = function($rootScope) {
+        return new Meta($rootScope);
       };
     });
 }));

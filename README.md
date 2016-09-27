@@ -97,6 +97,12 @@ or download the file from [dist](https://github.com/vinaygopinath/ngMeta/tree/ma
         }
     }
     ```
+Furthermore, you should use the Helper function to decorate $stateProvider's "data" function like this
+   ```
+   .config(['ngMetaProvider', function(ngMetaProvider) {
+      $stateProvider.decorator('data', ngMetaProvider.mergeNestedStateData);
+   }]);
+   ```
 In this way the metadata for the url /services/vaccinations would be
     ```
     'meta': {

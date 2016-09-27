@@ -66,7 +66,49 @@ or download the file from [dist](https://github.com/vinaygopinath/ngMeta/tree/ma
       ...
     });
     ```
+**N.B. if you wish to take advantage of ui-router's nested views and data inheritence, then you should specify your "meta" config underneath the "data" property like this**
 
+    ```
+.state(
+    'services', {
+        abstract: true,
+        url: '/services',
+        templateUrl: '/services/base.html',
+        controller: 'servicesCtrl',
+        data: {
+            'meta': {
+                'og:image': 'http://www.yourdomain.com/img/facebookimage.jpg',
+                'author': 'PawSquad'
+            }
+        }
+    }
+
+.state(
+    'services.vaccinations', {
+        url: '/vaccinations',
+        templateUrl: '/services/vaccinations.html',
+        controller: '',
+        data: {
+            'meta': {
+                'title': 'Pet Vaccinations - All You Need To Know | PawSquad',
+                'og:title': 'All You Need To Know About Pet Vaccinations',
+                'og:description': 'Useful information about Routine Vaccines and Boosters for dogs and cats,   including start vaccines for puppies and kittens.',
+            }
+        }
+    }
+    ```
+In this way the metadata for the url /services/vaccinations would be
+    ```
+    'meta': {
+        'og:image': 'http://www.yourdomain.com/img/facebookimage.jpg',
+        'author': 'PawSquad',
+        'title': 'Pet Vaccinations - All You Need To Know | PawSquad',
+        'og:title': 'All You Need To Know About Pet Vaccinations',
+        'og:description': 'Useful information about Routine Vaccines and Boosters for dogs and cats,   including start vaccines for puppies and kittens.',
+
+}
+    ```
+    
 3. **[Optional]** Set the default values of meta tags during Angular's configuration phase. If the `meta` object of a route does not contain a specific tag, the default value is used instead.
     ```javascript
     //Add a suffix to all page titles

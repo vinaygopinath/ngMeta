@@ -167,8 +167,15 @@
         };
 
         var update = function(event, current) {
-          readRouteMeta(angular.copy(current.meta));
+          if (current.meta) {
+            readRouteMeta(angular.copy(current.meta));
+          } else if (current.data.meta) {
+            readRouteMeta(angular.copy(current.data.meta));
+          } else {
+            readRouteMeta();
+          }
         };
+
 
         /**
          * @ngdoc method

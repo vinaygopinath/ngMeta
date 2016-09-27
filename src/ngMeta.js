@@ -32,7 +32,7 @@
         useTitleSuffix: false
       };
 
-      function Meta($rootScope) {
+      function Meta($rootScope, $injector) {
 
         /**
          * @ngdoc method
@@ -196,7 +196,17 @@
         var init = function() {
           $rootScope.ngMeta = {};
           $rootScope.$on('$routeChangeSuccess', update);
-          $rootScope.$on('$stateChangeSuccess', update);
+          $rootScope.$on('$stateChangeSuccess', function(event, toState) {
+            var $state = $injector.get('$state');
+            var stateParent = $state.get('^');
+            if ( stateParent) {
+              if (stateParent.data && stateParent.data.meta) {
+                toState.data.meta = angular.merge(stateParent.data.meta, toState.data.meta);
+              }
+            }
+
+            return update(event, toState);
+          });
         };
 
         return {
@@ -283,8 +293,8 @@
         return this;
       };
 
-      this.$get = function($rootScope) {
-        return new Meta($rootScope);
+      this.$get = function($rootScope, $injector) {
+        return new Meta($rootScope, $injector);
       };
     });
 }));

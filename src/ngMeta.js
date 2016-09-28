@@ -307,7 +307,8 @@
         if (originalData.meta || parentMetaData) {
           originalData.meta = mergedMeta;
         }
-        return state.self.data = originalData;
+        state.self.data = originalData;
+        return originalData;
       };
 
 

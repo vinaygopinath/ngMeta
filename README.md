@@ -66,6 +66,7 @@ or download the file from [dist](https://github.com/vinaygopinath/ngMeta/tree/ma
       ...
     });
     ```
+
 3. **[Optional]** Set the default values of meta tags during Angular's configuration phase. If the `meta` object of a route does not contain a specific tag, the default value is used instead.
     ```javascript
     //Add a suffix to all page titles

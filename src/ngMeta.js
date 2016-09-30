@@ -167,13 +167,7 @@
         };
 
         var update = function(event, current) {
-          if (current.meta) {
-            readRouteMeta(angular.copy(current.meta));
-          } else if (current.data.meta) {
-            readRouteMeta(angular.copy(current.data.meta));
-          } else {
-            readRouteMeta();
-          }
+          readRouteMeta(angular.copy(current.meta || current.data.meta));
         };
 
 
@@ -301,10 +295,10 @@
 
         // create new merged meta
         var parentMetaData = state.parent && state.parent.data && state.parent.data.meta;
-        var mergedMeta = angular.merge({}, parentMetaData, originalData.meta);
 
         //Assign the merged meta if necessary to current state and return
         if (originalData.meta || parentMetaData) {
+          var mergedMeta = angular.merge({}, parentMetaData, originalData.meta);
           originalData.meta = mergedMeta;
         }
         state.self.data = originalData;

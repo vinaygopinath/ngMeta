@@ -9,8 +9,11 @@ This is an Angular 1.x module. Angular2 module is available as [ng2-meta](https:
 * [Getting Started](#getting-started)
 * [Defaults](#defaults)
 * [Dynamic meta tags](#dynamic-meta-tags)
-* [Support For Other Crawlers](#support-for-other-crawlers)
 * [Debugging](#debugging)
+* [Advanced](#advanced)
+  * [Data inheritance in ui-router](#data-inheritance-in-ui-router)
+  * [Using custom data resolved by ui-router](#using-custom-data-resolved-by-ui-router)
+  * [Support for other crawlers](#support-for-other-crawlers)
 * [Websites using ngMeta](#websites-using-ngmeta)
 * [Further reading](#further-reading)
 * [Licence](#mit-licence)
@@ -50,17 +53,21 @@ or download the file from [dist](https://github.com/vinaygopinath/ngMeta/tree/ma
       $routeProvider
       .when('/home', {
         templateUrl: 'home-template.html',
-        meta: {
-          'title': 'Home page',
-          'description': 'This is the description shown in Google search results'
+        data: {
+          meta: {
+            'title': 'Home page',
+            'description': 'This is the description shown in Google search results'
+          }
         }
       })
       .when('/login', {
         templateUrl: 'login-template.html',
-        meta: {
-          'title': 'Login page',
-          'titleSuffix': ' | Login to YourSiteName',
-          'description': 'Login to the site'
+        data: {
+          meta: {
+            'title': 'Login page',
+            'titleSuffix': ' | Login to YourSiteName',
+            'description': 'Login to the site'
+          }
         }
       });
       ...
@@ -159,60 +166,69 @@ Note: Please use `setTitle` to modify the title and/or titleSuffix and `setTag` 
 | **setTag(String tagName, String value)** | Sets the value of an arbitrary tag, using the default value of the tag when the second param is missing. The value is accessible as {{ngMeta.tagName}} from HTML. Calling setTag with `title` or `titleSuffix` as `tagName` results in an error. Title must be modified using `setTitle` instead.|ngMeta.setTag('author', 'John Smith')<br/><br/>ngMeta.setTag('ogImage', 'http://url.com/image.png')|
 | **setDefaultTag(String tagName, String value)** | Sets the default value of an arbitrary tag, overwriting previously set default values, but not the value set dynamically (using `setTitle`/`setTag`) or by the route/state. `title` and `titleSuffix` are accepted values.|ngMeta.setDefaultTag('image', 'http://default-image-url.com');<br/><br/>ngMeta.setDefaultTag('title','Default title');|
 
-### A Note on ui-router's data inheritence if you wish to take advantage of nested views and data inheritence, then you should specify your "meta" config underneath the "data" property like this**
 
-    ```
-.state(
-    'services', {
-        abstract: true,
-        url: '/services',
-        templateUrl: '/services/base.html',
-        controller: 'servicesCtrl',
-        data: {
-            'meta': {
-                'og:image': 'http://www.yourdomain.com/img/facebookimage.jpg',
-                'author': 'PawSquad'
-            }
-        }
-    }
+## Debugging
+* [ng-inspector Chrome extension](https://chrome.google.com/webstore/detail/ng-inspector-for-angularj/aadgmnobpdmgmigaicncghmmoeflnamj) shows the tags set by ngMeta when a state/route is open
+![ng-inspector running on an Angular SPA with ngMeta](http://i.imgur.com/3ltyKC4.png)
 
-.state(
-    'services.vaccinations', {
-        url: '/vaccinations',
-        templateUrl: '/services/vaccinations.html',
-        controller: '',
-        data: {
-            'meta': {
-                'title': 'Pet Vaccinations - All You Need To Know | PawSquad',
-                'og:title': 'All You Need To Know About Pet Vaccinations',
-                'og:description': 'Useful information about Routine Vaccines and Boosters for dogs and cats,   including start vaccines for puppies and kittens.',
-            }
-        }
-    }
-    ```
-Furthermore, you should use the Helper function to decorate $stateProvider's "data" function like this
-   ```
-   .config(['ngMetaProvider', function(ngMetaProvider) {
-      $stateProvider.decorator('data', ngMetaProvider.mergeNestedStateData);
-   }]);
-   ```
-In this way the metadata for the url /services/vaccinations would be
-    ```
-    'meta': {
+* Facebook's [Open Graph Object Debugger](https://developers.facebook.com/tools/debug/og/object/) shows detailed information about your site's meta tags as well as a preview of the snippet shown when your site is shared.
+
+## Advanced
+
+### Data inheritance in ui-router
+If you wish to take advantage of nested views and data inheritence, then you should specify your `meta` config underneath the `data` property like this:
+
+```javascript
+$stateProvider
+  .state('services', {
+    abstract: true,
+    url: '/services',
+    templateUrl: '/services/base.html',
+    controller: 'servicesCtrl',
+    data: {
+      'meta': {
         'og:image': 'http://www.yourdomain.com/img/facebookimage.jpg',
-        'author': 'PawSquad',
+        'author': 'PawSquad'
+      }
+    }
+  })
+  .state('services.vaccinations', {
+    url: '/vaccinations',
+    templateUrl: '/services/vaccinations.html',
+    controller: '',
+    data: {
+      'meta': {
         'title': 'Pet Vaccinations - All You Need To Know | PawSquad',
         'og:title': 'All You Need To Know About Pet Vaccinations',
         'og:description': 'Useful information about Routine Vaccines and Boosters for dogs and cats,   including start vaccines for puppies and kittens.',
+      }
+    }
+  })
+```
 
-}
-    ```
-### Setting tags with custom data resolved by ui-router
+Furthermore, you should use the helper function to decorate $stateProvider's `data` function like this
+```javascript
+.config(['ngMetaProvider', function (ngMetaProvider) {
+  $stateProvider.decorator('data', ngMetaProvider.mergeNestedStateData);
+}])
+```
+In this way the metadata for the `/services/vaccinations` URL would be
+```javascript
+  'meta': {
+    'og:image': 'http://www.yourdomain.com/img/facebookimage.jpg',
+    'author': 'PawSquad',
+    'title': 'Pet Vaccinations - All You Need To Know | PawSquad',
+    'og:title': 'All You Need To Know About Pet Vaccinations',
+    'og:description': 'Useful information about Routine Vaccines and Boosters for dogs and cats, including start vaccines for puppies and kittens.'
+  }
+```
+### Using custom data resolved by ui-router
 
-If you want to dynamically set your tags using ui-routers resolve (https://github.com/angular-ui/ui-router/wiki#resolve), this is possible as well:
+If you want to dynamically set your tags using ui-router's [resolve](https://github.com/angular-ui/ui-router/wiki#resolve), this is possible as well:
 ```
 resolve: {
   data: function(..., ngMeta) {
+    //Ex: Load data from HTTP endpoint
     ....
     ngMeta.setTitle();
     ngMeta.setTag('description', '....');
@@ -225,7 +241,7 @@ meta: {
 ```
 The property `disableUpdate: true` is required because ui-router will execute the resolve function *before* the $stateChangeSuccess event is fired. Setting `disableUpdate: true` will prevent your tags from getting reset by the $stateChangeSuccess event listener.
 
-## Support For Other Crawlers
+### Support for other crawlers
 
 While Google is capable of rendering Angular sites, other search engines (?) and crawler bots used by social media platforms do not execute Javascript. This affects the site snippets generated by sites like Facebook and Twitter. They may show a snippet like this one:
 
@@ -235,16 +251,10 @@ You can use prerendering services to avoid this issue altogether, or update the 
 
 **TL;DR: ngMeta helps the Google crawler render your Angular site and read the meta tags. For other sites like Facebook/Twitter that can't render Javascript, you need to use pre-renderers or server redirects.**
 
-## Debugging
-* [ng-inspector Chrome extension](https://chrome.google.com/webstore/detail/ng-inspector-for-angularj/aadgmnobpdmgmigaicncghmmoeflnamj) shows the tags set by ngMeta when a state/route is open
-![ng-inspector running on an Angular SPA with ngMeta](http://i.imgur.com/3ltyKC4.png)
-
-* Facebook's [Open Graph Object Debugger](https://developers.facebook.com/tools/debug/og/object/) shows detailed information about your site's meta tags as well as a preview of the snippet shown when your site is shared.
-
 ## Websites using ngMeta
 * [acloud.guru](https://acloud.guru) - AWS certification online learning platform
 
-To list your website here, please make a PR and add your URL in this section of README.md in this format
+To list your website here, please make a PR (or [edit README.md on GitHub](https://github.com/vinaygopinath/ngMeta/edit/master/README.md)) and add your URL in this section of README.md in this format
 ```
 "Site URL - Short description"
 ```

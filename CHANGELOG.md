@@ -1,5 +1,11 @@
 #Changelog
 
+## [v1.0.0](https://github.com/vinaygopinath/ngMeta/releases/tag/v1.0.0)
+
+##### Features
+
+* [#14](https://github.com/vinaygopinath/ngMeta/issues/14) Inherited meta data in child states of ui-router. Thanks [@martyzz1](https://github.com/martyzz1)
+
 ## [v0.3.10](https://github.com/vinaygopinath/ngMeta/releases/tag/v0.3.10)
 
 ##### Features

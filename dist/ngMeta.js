@@ -167,8 +167,9 @@
         };
 
         var update = function(event, current) {
-          readRouteMeta(angular.copy(current.meta));
+          readRouteMeta(angular.copy(current.meta || (current.data && current.data.meta)));
         };
+
 
         /**
          * @ngdoc method
@@ -275,6 +276,35 @@
         config.useTitleSuffix = !!bool;
         return this;
       };
+
+      /**
+       * @ngdoc method
+       * @name ngMetaProvider#mergeNestedStateData
+       * @param {string} mergeNestedStateData [Optional] method to deep merge
+       * meta data for nested views.
+       *
+       * @description
+       * Helper function to Extend $stateProvider.decorator('state') to merge nested
+       * view meta data if using ui-router.
+       *
+       * @returns {Object} data
+       */
+      this.mergeNestedStateData = function(state, parentDecoratorFn) {
+      // original data
+        var originalData = parentDecoratorFn(state) || {};
+
+        // create new merged meta
+        var parentMetaData = state.parent && state.parent.data && state.parent.data.meta;
+
+        //Assign the merged meta if necessary to current state and return
+        if (originalData.meta || parentMetaData) {
+          var mergedMeta = angular.merge({}, parentMetaData, originalData.meta);
+          originalData.meta = mergedMeta;
+        }
+        state.self.data = originalData;
+        return originalData;
+      };
+
 
       this.$get = ["$rootScope", function($rootScope) {
         return new Meta($rootScope);

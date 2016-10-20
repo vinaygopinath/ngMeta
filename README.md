@@ -101,8 +101,7 @@ or download the file from [dist](https://github.com/vinaygopinath/ngMeta/tree/ma
 
 5. Set the meta tags in your HTML file
     ```html
-    <title ng-bind="ngMeta.title"></title>
-    <!-- OR <title>{{ngMeta.title}}</title> -->    
+    <title ng-bind="ngMeta.title"></title>   
 
     <!-- Arbitrary tags -->
     <meta property="og:type" content="{{ngMeta['og:type']}}" />

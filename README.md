@@ -1,7 +1,7 @@
 # ngMeta
 > Dynamic meta tags in your AngularJS single page application
 
-[![npm version](https://badge.fury.io/js/ng-meta.svg)](https://badge.fury.io/js/ng-meta) [![Build Status](https://travis-ci.org/vinaygopinath/ngMeta.svg?branch=master)](https://travis-ci.org/vinaygopinath/ngMeta)
+[![npm version](https://badge.fury.io/js/ng-meta.svg)](https://badge.fury.io/js/ng-meta) [![Build Status](https://travis-ci.org/vinaygopinath/ngMeta.svg?branch=master)](https://travis-ci.org/vinaygopinath/ngMeta) [![Join the chat at https://gitter.im/ngMeta/Lobby](https://badges.gitter.im/ngMeta/Lobby.svg)](https://gitter.im/ngMeta/Lobby)
 
 This is an Angular 1.x module. Angular2 module is available as [ng2-meta](https://github.com/vinaygopinath/ng2-meta)
 * [Demo](#demo)

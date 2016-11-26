@@ -30,17 +30,21 @@
           .when('/', {
             templateUrl: 'views/home.html',
             controller: 'HomeCtrl',
-            meta: {
-              title: 'Home',
-              description: 'Sample description of the home page'
+            data: {
+              meta: {
+                'title': 'Home page',
+                'description': 'Home page description'
+              }
             }
           })
           .when('/about', {
             templateUrl: 'views/about.html',
             controller: 'AboutCtrl',
-            meta: {
-              title: 'About Us',
-              description: 'Description of about-us page'
+            data: {
+              meta: {
+                'title': 'About Us',
+                'description': 'About us description'
+              }
             }
           })
           ...
@@ -68,11 +72,11 @@
     <p>Use meta tags in your HTML file
       <pre>
         <code ng-non-bindable>
-          &lt;head&gt;
-          &lt;title&gt;{{ngMeta.title}}&lt;/title&gt;
-          &lt;meta property="og:title" content="{{ngMeta.title}}" /&gt;
-          &lt;meta property="og:description" content="{{ngMeta.description}}" /&gt;
-          &lt;/head&gt;
+        &lt;head&gt;
+        &lt;title&gt;{{ngMeta.title}}&lt;/title&gt;
+        &lt;meta property="og:title" content="{{ngMeta.title}}" /&gt;
+        &lt;meta property="og:description" content="{{ngMeta.description}}" /&gt;
+        &lt;/head&gt;
         </code>
       </pre>
     </p>

@@ -1,5 +1,11 @@
 #Changelog
 
+## [v1.0.1](https://github.com/vinaygopinath/ngMeta/releases/tag/v1.0.1)
+
+##### Features
+
+* Fix dependency injection, now you can inject ngMeta as object (author @tronin)
+
 ## [v1.0.0](https://github.com/vinaygopinath/ngMeta/releases/tag/v1.0.0)
 
 ##### Features

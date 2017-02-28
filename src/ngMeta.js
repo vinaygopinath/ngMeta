@@ -19,7 +19,7 @@
    * # A metatags service for single-page applications
    * that supports setting arbitrary meta tags
    */
-  angular.module('ngMeta', [])
+  return angular.module('ngMeta', [])
     .provider('ngMeta', function() {
 
       'use strict';
@@ -309,5 +309,5 @@
       this.$get = function($rootScope) {
         return new Meta($rootScope);
       };
-    });
+    }).name;
 }));

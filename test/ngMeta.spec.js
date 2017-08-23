@@ -37,13 +37,14 @@ describe('Service: ngMeta', function() {
 
   'use strict';
 
-  var ngMeta, $rootScope;
+  var ngMeta, $rootScope, $injector;
 
   // instantiate service
   var injectDependencies = function() {
-    inject(function(_ngMeta_, _$rootScope_) {
+    inject(function(_ngMeta_, _$rootScope_, _$injector_) {
       ngMeta = _ngMeta_;
       $rootScope = _$rootScope_;
+      $injector = _$injector_;
     });
   };
 
@@ -68,11 +69,39 @@ describe('Service: ngMeta', function() {
       expect($rootScope.$on).toHaveBeenCalledWith('$routeChangeSuccess', jasmine.any(Function));
     });
 
-    //ui-router support
+    //ui-router 0.x support
     it('should set up a broadcast listener for $stateChangeSuccess', function() {
       spyOn($rootScope, '$on');
       ngMeta.init();
       expect($rootScope.$on).toHaveBeenCalledWith('$stateChangeSuccess', jasmine.any(Function));
+    });
+
+    //ui-router 1.x support
+    describe('ui-router 1.x support', function() {
+      var UI_ROUTER_TRANSITION_SERVICE = '$transitions';
+
+      it('should check for the availability of ui-router 1.x\'s $transitions service', function() {
+        var requestedServiceName;
+        spyOn($injector, 'has').and.callFake(function(serviceName) {
+          requestedServiceName = serviceName;
+        });
+
+        ngMeta.init();
+
+        expect(requestedServiceName).toEqual(UI_ROUTER_TRANSITION_SERVICE);
+      });
+
+      it('should set up a broadcast listener for $transitions.onSuccess (when $transitions is available)', function() {
+        var mockTransitionService = {
+          onSuccess: jasmine.createSpy()
+        };
+        spyOn($injector, 'has').and.returnValue(true);
+        spyOn($injector, 'get').and.returnValue(mockTransitionService);
+
+        ngMeta.init();
+
+        expect(mockTransitionService.onSuccess).toHaveBeenCalled();
+      });
     });
   });
 

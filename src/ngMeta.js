@@ -32,7 +32,7 @@
         useTitleSuffix: false
       };
 
-      function Meta($rootScope) {
+      function Meta($rootScope, $injector) {
 
         /**
          * @ngdoc method
@@ -191,6 +191,12 @@
           $rootScope.ngMeta = {};
           $rootScope.$on('$routeChangeSuccess', update);
           $rootScope.$on('$stateChangeSuccess', update);
+          if ($injector.has('$transitions')) {
+            var $transitions = $injector.get('$transitions');
+            $transitions.onSuccess({}, function(transition) {
+              update(null, transition.$to());
+            });
+          }
         };
 
         return {
@@ -306,8 +312,8 @@
       };
 
 
-      this.$get = function($rootScope) {
-        return new Meta($rootScope);
+      this.$get = function($rootScope, $injector) {
+        return new Meta($rootScope, $injector);
       };
     });
 }));

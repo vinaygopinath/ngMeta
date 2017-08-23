@@ -1,8 +1,15 @@
 #Changelog
 
-## [v1.0.1](https://github.com/vinaygopinath/ngMeta/releases/tag/v1.0.0)
+## [v1.0.2](https://github.com/vinaygopinath/ngMeta/releases/tag/v1.0.2)
 
-##### Features
+##### Bugfixes
+
+* [#25](https://github.com/vinaygopinath/ngMeta/issues/25)
+* [#36](https://github.com/vinaygopinath/ngMeta/issues/36)
+
+## [v1.0.1](https://github.com/vinaygopinath/ngMeta/releases/tag/v1.0.1)
+
+##### Bugfixes
 
 * [#27](https://github.com/vinaygopinath/ngMeta/issues/27) Added support for Webpack. Thanks [@mcgilly17](https://github.com/mcgilly17)
 

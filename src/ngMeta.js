@@ -170,6 +170,18 @@
           readRouteMeta(angular.copy(current.meta || (current.data && current.data.meta)));
         };
 
+        /**
+         * @ngdoc method
+         * @name resetMeta
+         * @description
+         * Helper function to reset ngMeta data and apply defaults. Useful when setting up ngmeta data in a
+         * UI-router resolve function.
+         *
+         * @returns {Object} self
+         */
+        var resetMeta = function() {
+          return readRouteMeta();
+        }
 
         /**
          * @ngdoc method
@@ -203,7 +215,8 @@
           'init': init,
           'setTitle': setTitle,
           'setTag': setTag,
-          'setDefaultTag': setDefaultTag
+          'setDefaultTag': setDefaultTag,
+          'resetMeta' : resetMeta
         };
       }
 

@@ -181,7 +181,7 @@
          */
         var resetMeta = function() {
           return readRouteMeta();
-        }
+        };
 
         /**
          * @ngdoc method

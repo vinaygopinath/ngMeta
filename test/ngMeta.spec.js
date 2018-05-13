@@ -345,4 +345,63 @@ describe('Service: ngMeta', function() {
     });
   });
 
+  describe('resetMeta: resetMeta()', function() {
+
+    describe('Basic checks', function() {
+      //Inject dependencies
+      beforeEach(function() {
+        injectDependencies();
+      });
+
+      it('should provide an resetMeta() function', function() {
+        expect(ngMeta.resetMeta).toBeDefined();
+      });
+    });
+
+    describe('Standard functionality', function() {
+
+      beforeEach(function() {
+        module(function(ngMetaProvider) {
+          ngMetaProvider.setDefaultTag(SOME_TAG, SOME_TAG_DEFAULT_VALUE);
+        });
+        injectDependencies();
+        ngMeta.init();
+      });
+
+      it('should set default values', function() {
+        ngMeta.resetMeta();
+
+        //default value available immediately
+        expect($rootScope.ngMeta[SOME_TAG]).toEqual(SOME_TAG_DEFAULT_VALUE);
+        // default value should still be present after state change
+        $rootScope.$broadcast('$stateChangeSuccess', { meta: { disableUpdate: true } });
+        expect($rootScope.ngMeta[SOME_TAG]).toEqual(SOME_TAG_DEFAULT_VALUE);        
+      });
+
+      it('should overwrite a previous default value', function() {
+        ngMeta.resetMeta();
+        ngMeta.setTag(SOME_TAG, SOME_TAG_VALUE);
+
+        $rootScope.$broadcast('$stateChangeSuccess', { meta: { disableUpdate: true } });
+        expect($rootScope.ngMeta[SOME_TAG]).not.toEqual(SOME_TAG_DEFAULT_VALUE);
+      });
+
+      it('should not overwrite a previous default value is state does not include disableUpdate', function() {
+        ngMeta.resetMeta();
+        ngMeta.setTag(SOME_TAG, SOME_TAG_VALUE);
+
+        $rootScope.$broadcast('$stateChangeSuccess', { meta: { disableUpdate: false } });
+        expect($rootScope.ngMeta[SOME_TAG]).toEqual(SOME_TAG_DEFAULT_VALUE);
+      });
+
+      it('should overwrite a non-default value', function() {
+        ngMeta.resetMeta();
+        ngMeta.setTitle(SOME_TITLE);
+        $rootScope.$broadcast('$stateChangeSuccess', { meta: { disableUpdate: true } });
+
+        expect($rootScope.ngMeta[SOME_TAG]).toEqual(SOME_TAG_DEFAULT_VALUE);
+        expect($rootScope.ngMeta.title).toEqual(SOME_TITLE);   
+      });
+    });
+  });
 });

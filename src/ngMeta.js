@@ -134,7 +134,7 @@
          * 3. Iterates through all default tags and sets the ones
          *    that were not utilized while setting the state/route tags.
          *
-         * @returns {Object} self
+         * @returns void
          */
         var readRouteMeta = function(meta) {
           meta = meta || {};
@@ -180,7 +180,9 @@
          * @returns {Object} self
          */
         var resetMeta = function() {
-          return readRouteMeta();
+          readRouteMeta();
+
+          return this;
         };
 
         /**

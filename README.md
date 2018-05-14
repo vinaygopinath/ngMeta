@@ -49,7 +49,7 @@ or download the file from [dist](https://github.com/vinaygopinath/ngMeta/tree/ma
 2. Add `meta` objects to your routes (ngRoute) or states (ui-router) and specify the meta tags appropriate to each view. Other than `title` and `titleSuffix`, which are reserved properties that affect the title of the page, the tag properties can be named as per your choice.
     ```js
     .config(function ($routeProvider, ngMetaProvider) {
-    
+
       $routeProvider
       .when('/home', {
         templateUrl: 'home-template.html',
@@ -79,7 +79,7 @@ or download the file from [dist](https://github.com/vinaygopinath/ngMeta/tree/ma
     //Add a suffix to all page titles
     ngMetaProvider.useTitleSuffix(true);
 
-    // On /home, the title would change to 
+    // On /home, the title would change to
     // 'Home Page | Best Website on the Internet!'
     ngMetaProvider.setDefaultTitleSuffix(' | Best Website on the Internet!');
 
@@ -94,14 +94,14 @@ or download the file from [dist](https://github.com/vinaygopinath/ngMeta/tree/ma
     .config(function($routeProvider, ngMetaProvider) {
       ....
     })
-    .run(['ngMeta', function(ngMeta) { 
+    .run(['ngMeta', function(ngMeta) {
       ngMeta.init();
     }]);
     ```
 
 5. Set the meta tags in your HTML file
     ```html
-    <title ng-bind="ngMeta.title"></title>   
+    <title ng-bind="ngMeta.title"></title>
 
     <!-- Arbitrary tags -->
     <meta property="og:type" content="{{ngMeta['og:type']}}" />
@@ -154,6 +154,8 @@ angular.module('YourApp')
   ngMeta.setTag('image', 'http://placeholder.com/abc.jpg');
 
   ngMeta.setDefaultTag('author', 'Default author');
+  //Set default tags (non-default tags, like author and image above, are NOT cleared)
+  ngMeta.resetMeta();
 });
 ```
 
@@ -164,13 +166,14 @@ Note: Please use `setTitle` to modify the title and/or titleSuffix and `setTag` 
 | **setTitle(String title, String titleSuffix)** |  Sets the current title based on the given params. When `useTitleSuffix` is enabled and titleSuffix is not provided, it uses the default titleSuffix. | ngMeta.setTitle('Title', ' - TitleSuffix')<br/><br/>ngMeta.setTitle('Title with default titleSuffix')<br/><br/>ngMeta.setTitle('Title with no titleSuffix','') |
 | **setTag(String tagName, String value)** | Sets the value of an arbitrary tag, using the default value of the tag when the second param is missing. The value is accessible as {{ngMeta.tagName}} from HTML. Calling setTag with `title` or `titleSuffix` as `tagName` results in an error. Title must be modified using `setTitle` instead.|ngMeta.setTag('author', 'John Smith')<br/><br/>ngMeta.setTag('ogImage', 'http://url.com/image.png')|
 | **setDefaultTag(String tagName, String value)** | Sets the default value of an arbitrary tag, overwriting previously set default values, but not the value set dynamically (using `setTitle`/`setTag`) or by the route/state. `title` and `titleSuffix` are accepted values.|ngMeta.setDefaultTag('image', 'http://default-image-url.com');<br/><br/>ngMeta.setDefaultTag('title','Default title');|
+| **resetMeta(void)** | Applies the default meta tags. This is relevant when using ui-router and `disableUpdate: true` (Refer [this comment](https://github.com/vinaygopinath/ngMeta/pull/41#issuecomment-387143832)). Custom tags set dynamically (using `setTag` or `setTitle`) are **not** cleared. |ngMeta.resetMeta();|
 
 
 ## Debugging
 * [ng-inspector Chrome extension](https://chrome.google.com/webstore/detail/ng-inspector-for-angularj/aadgmnobpdmgmigaicncghmmoeflnamj) shows the tags set by ngMeta when a state/route is open
 ![ng-inspector running on an Angular SPA with ngMeta](http://i.imgur.com/3ltyKC4.png)
 
-* Facebook's [Open Graph Object Debugger](https://developers.facebook.com/tools/debug/og/object/) shows detailed information about your site's meta tags as well as a preview of the snippet shown when your site is shared.
+* Facebook's [Open Graph Object Debugger](https://developers.facebook.com/tools/debug/og/object/) shows detailed information about your site's meta tags as well as a preview of the snippet shown when your site is shared. **Note that you need to use server-side rendering or prerendering in combination with ngMeta to see your meta tags in the the debugger**
 
 ## Advanced
 

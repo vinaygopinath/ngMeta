@@ -386,7 +386,7 @@ describe('Service: ngMeta', function() {
         expect($rootScope.ngMeta[SOME_TAG]).not.toEqual(SOME_TAG_DEFAULT_VALUE);
       });
 
-      it('should not overwrite a previous default value is state does not include disableUpdate', function() {
+      it('should not overwrite a previous default value if state does not include disableUpdate', function() {
         ngMeta.resetMeta();
         ngMeta.setTag(SOME_TAG, SOME_TAG_VALUE);
 

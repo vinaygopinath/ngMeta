@@ -1,14 +1,11 @@
 {
   "name": "ng-meta",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Meta tags support for AngularJS single page applications (SPA)",
   "main": "dist/ngMeta.js",
-  "directories": {
-    "example": "examples",
-    "test": "test"
-  },
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "build": "grunt dist"
   },
   "repository": {
     "type": "git",

@@ -1,5 +1,11 @@
 #Changelog
 
+## [v1.0.3](https://github.com/vinaygopinath/ngMeta/releases/tag/v1.0.3)
+
+#### Features
+
+* [#41](https://github.com/vinaygopinath/ngMeta/pull/41) Added `resetMeta` to apply default tags in the resolve function of ui-router when `disableUpdate` is `true`. Thanks [jacobcsmith](https://github.com/jacobcsmith)
+
 ## [v1.0.2](https://github.com/vinaygopinath/ngMeta/releases/tag/v1.0.2)
 
 ##### Bugfixes

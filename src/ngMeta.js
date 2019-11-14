@@ -167,6 +167,7 @@
         };
 
         var update = function(event, current) {
+          if (!current) return;
           readRouteMeta(angular.copy(current.meta || (current.data && current.data.meta)));
         };
 

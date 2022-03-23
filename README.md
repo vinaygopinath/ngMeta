@@ -249,7 +249,7 @@ While Google is capable of rendering Angular sites, other search engines (?) and
 
 ![Facebook site snippet](http://i.imgur.com/wSNMYNF.png)
 
-You can use prerendering services to avoid this issue altogether, or update the server config to generate and serve a simplified page with just the open graph meta data needed for the bots to create snippets. Michael Bromley's article, [Enable Rich Sharing In Your AngularJS App](http://www.michaelbromley.co.uk/blog/171/enable-rich-social-sharing-in-your-angularjs-app) has more information on how to do that.
+You can use prerendering services to avoid this issue altogether, or update the server config to generate and serve a simplified page with just the open graph meta data needed for the bots to create snippets. Michael Bromley's article, [Enable Rich Sharing In Your AngularJS App](https://www.michaelbromley.co.uk/blog/enable-rich-social-sharing-in-your-angularjs-app/) has more information on how to do that.
 
 **TL;DR: ngMeta helps the Google crawler render your Angular site and read the meta tags. For other sites like Facebook/Twitter that can't render Javascript, you need to use pre-renderers or server redirects.**
 
